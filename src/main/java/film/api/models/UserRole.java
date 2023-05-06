@@ -17,12 +17,12 @@ public class UserRole {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role Role;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User User;
 }

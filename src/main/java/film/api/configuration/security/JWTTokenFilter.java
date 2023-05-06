@@ -58,8 +58,8 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             logger.warn("The token has expired", e);
             return;
         }
-        UserDetails userDetailsx = this.userDetailsService.loadUserByUsername(username);
-        boolean a=(SecurityContextHolder.getContext().getAuthentication()==null);
+
+
         if (username == null || SecurityContextHolder.getContext().getAuthentication() != null) return;
 
         logger.debug("Security context was null, so authorizing user '{}'...", username);
