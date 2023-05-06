@@ -94,7 +94,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     "/**/*.css",
                     "/**/*.js",
                     "/images/**",
-                    "/static/images /**",
+                    "/static/images/**",
                     "/static/videos/**",
                     "/videos/**"
             );
