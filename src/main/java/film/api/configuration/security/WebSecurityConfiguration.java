@@ -1,5 +1,5 @@
 package film.api.configuration.security;
-
+import film.api.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true,jsr250Enabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JWTUtil jwtTokenUtil;
@@ -62,6 +62,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/upload/**").permitAll()
+//                .antMatchers("/user/**").hasRole("Admin")
                 .anyRequest().authenticated();
         JWTTokenFilter authenticationTokenFilter = new JWTTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -85,12 +87,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .ignoring()
             .antMatchers(
                     HttpMethod.GET,
-                    "/",
+
                     "/*.html",
                     "/favicon.ico",
                     "/**/*.html",
                     "/**/*.css",
-                    "/**/*.js"
+                    "/**/*.js",
+                    "/images/**",
+                    "/static/images /**",
+                    "/static/videos/**",
+                    "/videos/**"
             );
 
     }
