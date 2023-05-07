@@ -200,7 +200,7 @@
                     
                     var tableUserHtml ='<thead><tr><th>UserName</th><th>PassWord</th><th>FullName</th><th>Action</th></tr></thead><tbody>';
                     for (var i =0;i<Response.length;i++){
-                        tableUserHtml+='<tr><td>'+Response[i].id+'</td><td>'+Response[i].UserName+'</td><td>'+Response[i].FullName+'</td><td><div class="action__User"><div class="action__User__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editUser('+Response[i].id+')"></i> </div><div class="action__User__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
+                        tableUserHtml+='<tr><td>'+Response[i].id+'</td><td>'+Response[i].username+'</td><td>'+Response[i].fullname+'</td><td><div class="action__User"><div class="action__User__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editUser('+Response[i].id+')"></i> </div><div class="action__User__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
                     }
                     tableUserHtml+='</body>';
                     indexPageElement.innerHTML=indexPageHtml;
