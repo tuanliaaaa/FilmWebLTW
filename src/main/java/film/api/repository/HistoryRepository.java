@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
-    @Query(nativeQuery = true, value = "SELECT history.chapter_id, COUNT(history.id) AS count, AVG(history.rate) AS avg, chapter.chapter_image, chapter.chapter_name " +
+    @Query(nativeQuery = true, value = "SELECT history.chapter_id, COUNT(history.id) AS count, AVG(history.rate) AS avg " +
             "FROM history JOIN chapter " +
             "WHERE (history.history_view >= :fromDay AND history.history_view < :toDay) " +
-            "GROUP BY history.Chapter_id, chapter.chapter_image, chapter.chapter_name ORDER BY count DESC")
+            "GROUP BY history.Chapter_id ORDER BY count DESC")
     List<Object[]> getChaptersHotCount(@Param("fromDay") LocalDateTime fromDay, @Param("toDay") LocalDateTime toDay);
 
 }
