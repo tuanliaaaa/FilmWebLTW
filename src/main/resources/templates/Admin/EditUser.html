@@ -102,7 +102,7 @@
                 var ResponseJson=xhttp.responseText;
                 var Response= JSON.parse(ResponseJson);
                   var userByIDElement =document.getElementById('userEdit__inFor');
-                  var userByIDHtml='<div class="User__infor__UserName"><label for="UserName">UserName</label><input type="text" id="UserName" value="'+Response.UserName+'"></div><div class="User__infor__FullName"><label for="FullName">FullName</label><input type="text" id="FullName" value="'+Response.FullName+ '"></div><div class="User__infor__Password"><label for="Password">Password</label><input type="text" id="Password" value="'+Response.Password+'"> </div>';
+                  var userByIDHtml='<div class="User__infor__UserName"><label for="UserName">UserName</label><input type="text" id="UserName" value="'+Response.username+'"></div><div class="User__infor__FullName"><label for="FullName">FullName</label><input type="text" id="FullName" value="'+Response.fullname+ '"></div>';
                   userByIDElement.innerHTML=userByIDHtml;
                 }else if(xhttp.status==204){
                    
@@ -149,9 +149,9 @@
                 }
             }         
             const userPost ={
-                UserName:document.getElementById('UserName').value,
-                Password: document.getElementById('Password').value,
-                FullName: document.getElementById('FullName').value
+                username:document.getElementById('UserName').value,
+
+                fullname: document.getElementById('FullName').value
             }
             var userPostJson =JSON.stringify(userPost);
             //khai báo phương thức và đường dẫn để request
