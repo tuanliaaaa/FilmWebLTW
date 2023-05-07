@@ -1,7 +1,9 @@
 package film.api.controller;
 
+import film.api.DTO.ActorDTO;
 import film.api.models.Actor;
 import film.api.repository.ActorRepository;
+import film.api.service.ActorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,43 +17,50 @@ import java.util.Optional;
 public class ActorController {
 
     @Autowired
-    private ActorRepository actorRepository;
+    private ActorService actorService;
 
     @GetMapping("/list")
-    public List<Actor> getAllActors() {
-        return actorRepository.findAll();
+    public ResponseEntity<?> getAllActors() {
+        String nhi = "toi te";
+
+        return new ResponseEntity<>(actorService.getList(), HttpStatus.OK);
     }
 
     @PostMapping("add")
-    public ResponseEntity<?> addActor(@RequestBody Actor actor) {
-        Actor savedActor = actorRepository.save(actor);
+    public ResponseEntity<?> addActor(@RequestBody ActorDTO actorPost) {
+
+        Actor savedActor = actorService.addActor(Actor.builder()
+                .ActorName(actorPost.getActorName())
+                .Age(actorPost.getAge())
+                .nativeLand(actorPost.getNativeLand())
+                .Sex(actorPost.getSex()).build());
         return new ResponseEntity<>(savedActor, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getActorById(@PathVariable Long id) {
-        Optional<Actor> actor = actorRepository.findById(id);
+        Optional<Actor> actor = actorService.findById(id);
+
         if (!actor.isPresent()) {
             return new ResponseEntity<>("Không tồn tại có id = " + id, HttpStatus.OK);
         }
-        return new ResponseEntity<>(actor, HttpStatus.OK);
+        return new ResponseEntity<>(new ActorDTO(actor.get()), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateActor(@PathVariable Long id, @RequestBody Actor updateActor) {
-        Optional<Actor> actor = actorRepository.findById(id);
-        if (!actor.isPresent()) {
-            return new ResponseEntity<>("Không tồn tại có id = " + id, HttpStatus.OK);
-        }
-        actorRepository.delete(actor.get());
-        actorRepository.save(updateActor);
-        return new ResponseEntity<>(actor, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
-        actorRepository.deleteById(id);
-        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
-    }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<Object> updateActor(@PathVariable Long id, @RequestBody ActorDTO updateActor) {
+//        Optional<Actor> actor = actorService.findById(id);
+//        if (!actor.isPresent()) {
+//            return new ResponseEntity<>("Không tồn tại có id = " + id, HttpStatus.OK);
+//        }
+//        actorService.updateActor(actor.get(), updateActor);
+//        return new ResponseEntity<>(actor, HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
+//        actorRepository.deleteById(id);
+//        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
+//    }
 }
 
