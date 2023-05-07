@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/css/DashBoard.css">
+    <link rel="stylesheet" href="/Admin/css/DashBoard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   
@@ -14,7 +14,7 @@
     <div id="header">
         <div class="header__nav">
             <div class="header__nav__logo">
-                <img src="/static/image/netflix.png" alt="">
+                <img src="/images/netflix.png" alt="">
             </div>
             <div class="header__nav__mavbar">
                 <ul>
@@ -143,7 +143,7 @@
                 }
                 else if(xhttp.status==403)
                 {
-                    localStorage.removeItem("Token");
+                   localStorage.removeItem("Token");
                     window.location="/Admin/Login";
                 }
             }         
