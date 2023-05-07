@@ -37,21 +37,21 @@ public class ActorController {
         return new ResponseEntity<>(actor, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updateActor(@PathVariable Long id, @RequestBody Actor updateActor) {
-        Optional<Actor> actor = actorRepository.findById(id);
-        if (!actor.isPresent()) {
-            return new ResponseEntity<>("Không tồn tại có id = " + id, HttpStatus.OK);
-        }
-        actorRepository.delete(actor.get());
-        actorRepository.save(updateActor);
-        return new ResponseEntity<>(actor, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
-        actorRepository.deleteById(id);
-        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
-    }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<Object> updateActor(@PathVariable Long id, @RequestBody Actor updateActor) {
+//        Optional<Actor> actor = actorRepository.findById(id);
+//        if (!actor.isPresent()) {
+//            return new ResponseEntity<>("Không tồn tại có id = " + id, HttpStatus.OK);
+//        }
+//        actorRepository.delete(actor.get());
+//        actorRepository.save(updateActor);
+//        return new ResponseEntity<>(actor, HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
+//        actorRepository.deleteById(id);
+//        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
+//    }
 }
 
