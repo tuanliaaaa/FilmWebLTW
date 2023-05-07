@@ -26,22 +26,22 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("AllCategory")
+    @PostMapping("/AllCategory")
     public ResponseEntity<?> addCategory(@RequestBody CategoryDTO category) {
         Category category1 = categoryService.addCategory(Category.builder()
                 .CategoryName(category.getCategoryName()).build());
 
-        return new ResponseEntity<>(category1, HttpStatus.OK);
+        return new ResponseEntity<>(category1, HttpStatus.CREATED);
     }
-    @PatchMapping("CategoryById/{CategoryId}")
+    @PatchMapping("/CategoryById/{CategoryId}")
     public ResponseEntity<?> updateCategory(@PathVariable("CategoryId") Long id,@RequestBody CategoryDTO category){
         Category category1 = categoryService.updateCategory(id,Category.builder()
                 .CategoryName(category.getCategoryName()).build());
         return new ResponseEntity<>(category1, HttpStatus.OK);
     }
-    @DeleteMapping("CategoryById/{CategoryId}")
+    @DeleteMapping("/CategoryById/{CategoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable("CategoryId") Long id){
         categoryService.deleteCategory(id);
-        return new ResponseEntity<>("Xoa thanh cong",HttpStatus.OK);
+        return new ResponseEntity<>("Xoa thanh cong",HttpStatus.NO_CONTENT);
     }
 }
