@@ -1,49 +1,47 @@
 package film.api.controller;
+import film.api.DTO.CategoryDTO;
 import film.api.models.*;
 import film.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import film.api.service.CategoryService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/category", produces = "application/json")
+@RequestMapping(path = "/ApiV1", produces = "application/json")
 public class CategoryController {
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
-    @GetMapping("list")
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    @GetMapping("AllCategory")
+    public ResponseEntity<?> getList(){
+
+        return new ResponseEntity<>(categoryService.getList(), HttpStatus.OK);
+    }
+    @GetMapping("/{CategoryId}")
+    public ResponseEntity<?> findById(@PathVariable("CategoryId") Long id) {
+        return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
-        return new ResponseEntity<>(categoryRepository.findById(id).get(), HttpStatus.OK);
+    @PostMapping("AllCategory")
+    public ResponseEntity<?> addCategory(@RequestBody CategoryDTO category) {
+        Category category1 = categoryService.addCategory(Category.builder()
+                .CategoryName(category.getCategoryName()).build());
+
+        return new ResponseEntity<>(category1, HttpStatus.OK);
     }
-
-    @PostMapping("add")
-    public ResponseEntity<?> updateCategory(@RequestBody Category category) {
-        return new ResponseEntity<>(categoryRepository.save(category), HttpStatus.OK);
+    @PatchMapping("CategoryById/{CategoryId}")
+    public ResponseEntity<?> updateCategory(@PathVariable("CategoryId") Long id,@RequestBody CategoryDTO category){
+        Category category1 = categoryService.updateCategory(id,Category.builder()
+                .CategoryName(category.getCategoryName()).build());
+        return new ResponseEntity<>(category1, HttpStatus.OK);
     }
-
-    @PutMapping("update/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        Category category = categoryRepository.findById(id).get();
-
-        category.setCategoryName(categoryDetails.getCategoryName());
-
-        Category updatedCategory = categoryRepository.save(category);
-        return new ResponseEntity<>("Cập nhật thành công" + updatedCategory, HttpStatus.OK);
-    }
-
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
-        Category category = categoryRepository.findById(id).get();
-        categoryRepository.delete(category);
-        return new ResponseEntity<>("Đã xóa thành công", HttpStatus.OK);
+    @DeleteMapping("CategoryById/{CategoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable("CategoryId") Long id){
+        categoryService.deleteCategory(id);
+        return new ResponseEntity<>("Xoa thanh cong",HttpStatus.OK);
     }
 }
