@@ -62,8 +62,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/upload/**").permitAll()
-//                .antMatchers("/user/**").hasRole("Admin")
                 .anyRequest().authenticated();
         JWTTokenFilter authenticationTokenFilter = new JWTTokenFilter(userDetailsService(), jwtTokenUtil, tokenHeader);
         httpSecurity.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -96,7 +96,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     "/images/**",
                     "/static/images/**",
                     "/static/videos/**",
-                    "/videos/**"
+                    "/videos/**",
+                    "/Login/**",
+                    "/Admin/**"
             );
 
     }
