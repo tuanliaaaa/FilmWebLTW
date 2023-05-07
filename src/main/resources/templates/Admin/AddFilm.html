@@ -267,7 +267,7 @@
                     var selectCategoryHtml='<option value="0"></option>';
                     for(var i=0;i<Response.length;i++)
                     {
-                        selectCategoryHtml+='<option value="'+Response[i].id+'">'+Response[i].CategoryName+'</option>'
+                        selectCategoryHtml+='<option value="'+Response[i].id+'">'+Response[i].categoryName+'</option>'
                     }
                     selectCategoryElement.innerHTML=selectCategoryHtml;
                 }else if(xhttp.status==204){
@@ -285,7 +285,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetCategory",false);
+            xhttp.open("GET", "/ApiV1/AllCategory",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");
