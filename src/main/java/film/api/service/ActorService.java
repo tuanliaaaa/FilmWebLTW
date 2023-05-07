@@ -27,10 +27,21 @@ public class ActorService {
         return actorRepository.findById(id);
     }
 
-    public void updateActor(Actor actor, Actor updateActor) {
-        actorRepository.delete(actor);
-        actorRepository.save(updateActor);
+    public Actor updateActor(Long id, Actor updateActor) {
+        Actor actor = actorRepository.findById(id).get();
+        actor.setActorName(updateActor.getActorName());
+        actor.setAge(updateActor.getAge());
+        actor.setNativeLand(updateActor.getNativeLand());
+        actor.setSex(actor.getSex());
+        return actorRepository.save(actor);
     }
 
 
+    public void deleteById(Long id) {
+        actorRepository.deleteById(id);
+    }
+
+    public List<Actor> searchActors(String actorName) {
+        return actorRepository.searchActors(actorName);
+    }
 }
