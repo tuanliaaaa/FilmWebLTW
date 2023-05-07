@@ -47,11 +47,11 @@ public class ActorController {
         actorRepository.save(updateActor);
         return new ResponseEntity<>(actor, HttpStatus.OK);
     }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
-//        actorRepository.deleteById(id);
-//        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
-//    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteActor(@PathVariable Long id) {
+        actorRepository.deleteById(id);
+        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
+    }
 }
 
