@@ -34,9 +34,24 @@ public class UsersController {
         UserByAdminDTO userDTO= new UserByAdminDTO(user);
         return ResponseEntity.ok(userDTO);
     }
+    @GetMapping("UserByName/{Username}")
+    public ResponseEntity<?> UserByName(@PathVariable("Username") String username){
+        List<User> users=userService.findUsersByNameContain(username);
+        List<UserByAdminDTO> userListDTO=new ArrayList<>();
+        for (User user:users){
+            userListDTO.add(new UserByAdminDTO(user));
+        }
+
+        return ResponseEntity.ok(userListDTO);
+    }
     @DeleteMapping("UserByIDForAdmin/{UserID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("UserID") Long id){
         userService.deleteById(id);
         return new ResponseEntity<>("Xoa thanh cong", HttpStatus.NO_CONTENT);
+    }
+    @PatchMapping("UserByIDForAdmin/{UserID}")
+    public User updateUser(@PathVariable("UserID") Long id,
+                           @RequestBody UserByAdminDTO userPatchDTO) {
+        return userService.updateUser(id, userPatchDTO);
     }
 }

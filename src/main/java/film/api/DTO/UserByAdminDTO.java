@@ -1,10 +1,12 @@
 package film.api.DTO;
 import film.api.models.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Data
+@AllArgsConstructor
 public class UserByAdminDTO {
     private Long Id;
 
