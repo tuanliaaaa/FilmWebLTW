@@ -165,7 +165,7 @@ else{
             {
                 var tokenResponseJson=xhttp.responseText
                 var tokenResponse= JSON.parse(tokenResponseJson)
-                localStorage.setItem("Token", tokenResponse['access']);
+                localStorage.setItem("Token", tokenResponse['token']);
                 window.location='/Admin/Home';
                 
             }
