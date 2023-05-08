@@ -148,7 +148,7 @@
                         
                         var tableActorHtml ='<thead><tr><th>Actor Name</th><th>Actor Age</th><th>Sex</th><th>Action</th></tr></thead><tbody>';
                         for (var i =0;i<Response.length;i++){
-                            tableActorHtml+='<tr><td>'+Response[i].ActorName+'</td><td>'+Response[i].Age+'</td><td><p>'+Response[i].Sex+'</p></td><td><div class="action__Actor"><div class="action__Actor__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editActor('+Response[i].id+')"></i> </div><div class="action__Actor__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
+                            tableActorHtml+='<tr><td>'+Response[i].actorName+'</td><td>'+Response[i].age+'</td><td><p>'+Response[i].sex+'</p></td><td><div class="action__Actor"><div class="action__Actor__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editActor('+Response[i].id+')"></i> </div><div class="action__Actor__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
                         }
                         tableActorHtml+='</body>';
                         indexPageElement.innerHTML=indexPageHtml;
@@ -201,7 +201,7 @@
                     
                     var tableActorHtml ='<thead><tr><th>Actor Name</th><th>Actor Age</th><th>Sex</th><th>Action</th></tr></thead><tbody>';
                     for (var i =0;i<Response.length;i++){
-                        tableActorHtml+='<tr><td>'+Response[i].ActorName+'</td><td>'+Response[i].Age+'</td><td><p>'+Response[i].Sex+'</p></td><td><div class="action__Actor"><div class="action__Actor__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editActor('+Response[i].id+')"></i> </div><div class="action__Actor__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
+                        tableActorHtml+='<tr><td>'+Response[i].actorName+'</td><td>'+Response[i].age+'</td><td><p>'+Response[i].sex+'</p></td><td><div class="action__Actor"><div class="action__Actor__Edit" ><i class="fa-solid fa-pen-to-square" onclick="editActor('+Response[i].id+')"></i> </div><div class="action__Actor__Delete"><i class="fa-solid fa-trash"onclick="Delete('+Response[i].id+')" ></i></div></div></td></tr>'
                     }
                     tableActorHtml+='</body>';
                     indexPageElement.innerHTML=indexPageHtml;

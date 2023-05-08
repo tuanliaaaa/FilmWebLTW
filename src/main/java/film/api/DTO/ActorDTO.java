@@ -1,20 +1,22 @@
 package film.api.DTO;
 
 import film.api.models.Actor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ActorDTO {
 
     private Long id;
 
     private String ActorName;
 
-    private int Age;
+    private Integer Age;
 
     private String nativeLand;
 
-    private int Sex;
+    private Integer Sex;
 
     public ActorDTO(Actor actor) {
         this.id = actor.getId();

@@ -199,19 +199,28 @@
             categoryListParent.forEach(function(categoryParent,index){
                 ListCategory.push(categoryParent.getAttribute("value"));
             })
-            formData.append('FilmName',document.getElementById('FilmName').value);
-            formData.append('Description',document.getElementById('Description').value);
-            formData.append('FilmBollen',document.getElementById('Type').value);
+            formData.append('filmName',document.getElementById('FilmName').value);
+            formData.append('description',document.getElementById('Description').value);
+            formData.append('filmBollen',document.getElementById('Type').value);
           
-            formData.append('ListCategory',ListCategory);
-            formData.append('ListActor',ListActor);
-            formData.append('Image', document.getElementById('Image').files[0]);
-            formData.append('BannerFilmName', document.getElementById('Banner').files[0]);
-            formData.append('TrailerFilm', document.getElementById('Trainner').files[0]);
-            formData.append('Video', document.getElementById('Video').files[0]);
-           
-            formData.append('ChapterName', document.getElementById('ChapterName').value);
-            formData.append('ChapterDescription', document.getElementById('ChapterDescription').value);
+            formData.append('listCategory',ListCategory);
+            formData.append('listActor',ListActor);
+            if(document.getElementById('Image').files[0]!=null){
+                formData.append('image', document.getElementById('Image').files[0]);
+            }
+            if(document.getElementById('Banner').files[0]!=null){
+                formData.append('bannerFilmName', document.getElementById('Banner').files[0]);
+            }
+            if(document.getElementById('Trainner').files[0]!=null){
+                formData.append('trailerFilm', document.getElementById('Trainner').files[0]);
+            }
+            if(document.getElementById('Video').files[0]!=null){
+                formData.append('video', document.getElementById('Video').files[0]);
+            }
+            if( document.getElementById('ChapterName').value!="" && document.getElementById('chapterDescription').value!=""){
+                formData.append('chapterName', document.getElementById('ChapterName').value);
+                formData.append('chapterDescription', document.getElementById('ChapterDescription').value);
+            }
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                   // Nhận kích thước của response từ server
@@ -306,7 +315,7 @@
                     var selectActorHtml='<option value="0"></option>';
                     for(var i=0;i<Response.length;i++)
                     {
-                        selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].ActorName+'</option>'
+                        selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].actorName+'</option>'
                     }
                     selectActorElement.innerHTML=selectActorHtml;
                 }else if(xhttp.status==204){
@@ -324,7 +333,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetActor",false);
+            xhttp.open("GET", "/ApiV1/AllActor",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");

@@ -17,18 +17,20 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
     public List<CategoryDTO> getList(){
-         List<CategoryDTO> categoryDTO = new ArrayList<>();
-         List<Category> categories = categoryRepository.findAll();
-         for(Category category : categories){
-             CategoryDTO newDTO = new CategoryDTO(category);
-             categoryDTO.add(newDTO);
-         }
-         return categoryDTO;
+        List<CategoryDTO> categoryDTO = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+        for(Category category : categories){
+            CategoryDTO newDTO = new CategoryDTO(category);
+            categoryDTO.add(newDTO);
+        }
+        return categoryDTO;
     }
     public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id);
     }
-
+    public List<Category> searchCategory(String categoryname) {
+        return categoryRepository.findCategoryByName(categoryname);
+    }
     public Category addCategory(Category category){
         return categoryRepository.save(category);
     }

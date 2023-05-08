@@ -80,8 +80,8 @@
                         <div class="Actor__infor__ActorSex">
                             <label for="Sex">Sex</label>
                             <select id="Sex" required>
-                                <option value="true" >Nam</option>
-                                <option value="false" selected>Nữ</option>
+                                <option value="1" >Nam</option>
+                                <option value="0" selected>Nữ</option>
                                 
                             </select>
                         </div>
@@ -132,12 +132,13 @@
                     localStorage.removeItem("Token");
                     window.location="/Admin/Login";
                 }
-            }         
+            }
+
             const actorPost ={
-                ActorName:document.getElementById('ActorName').value,
-                Age:document.getElementById('Age').value,
+                actorName:document.getElementById('ActorName').value,
+                age:document.getElementById('Age').value,
                 nativeLand:document.getElementById('Nativeland').value,
-                Sex:document.getElementById('Sex').value
+                sex:document.getElementById('Sex').value
                
                 
             }

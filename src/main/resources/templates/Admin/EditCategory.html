@@ -74,39 +74,7 @@
                 </div>
 
             </div>
-            <div class="FilmByCategory">
-                <div class="listFilm__header">
-                    <div class="listFilm__header__nav">
-                        <div class="listFilm__header__nav__Show">
-                            <p>FilmListByCategory</p>
-                        </div>
-                        <div class="listFilm__header__nav__Search">
-                            <div class="nav__search__Film">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="listFilm__body">
-                    <table id="table__Films">
-                        <thead>
-                            <tr>
-                                <th>FilmName</th>
-                                <th>PassWord</th>
-                                <th>FullName</th>
-                                <th>Email</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                          
-                            
-                     
-                    </table>
-                </div>
-                
-            </div>
+
         </div>
     </div>
     <div id="footer">
@@ -133,16 +101,10 @@
                     
                 var ResponseJson=xhttp.responseText;
                 var Response= JSON.parse(ResponseJson);
-                var tableFilmElement =document.getElementById('table__Films');
-                var tableHtml=' <thead><tr><th>FilmName</th><th>Image</th><th>Description</th><th>FilmBollen</th><th>Action</th></tr></thead><tbody>';
-                
-                    for (var i=0;i<Response.films.length;i++){
-                    tableHtml+='<tr><td>'+Response.films[i].FilmName+'</td><td> <div class="imgFilm"><img src="'+Response.films[i].FilmImage+'" alt="" ></div></td><td><p>'+Response.films[i].FilmDescription+'</p></td><td>'+Response.films[i].FilmBollen+'</td><td><div class="action__Film"><div class="action__Film__Edit"><a href="/Admin/EditFilm/'+Response.films[i].id+'"><i class="fa-solid fa-pen-to-square" ></i></a></div></div></td></tr>'
-                }
-                tableHtml+='</tbody>';
-                tableFilmElement.innerHTML=tableHtml;
+
+
                 var categoryByIDElement =document.getElementById('categoryEdit__inFor');
-                var categoryByIDHtml='<div class="Category__infor__CategoryName"><label for="CategoryName">CategoryName</label><input type="text" id="CategoryName" value="'+Response.CategoryName+'"></div>';
+                var categoryByIDHtml='<div class="Category__infor__CategoryName"><label for="CategoryName">CategoryName</label><input type="text" id="CategoryName" value="'+Response.categoryName+'"></div>';
                 categoryByIDElement.innerHTML=categoryByIDHtml;
                 }else if(xhttp.status==204){
                    
@@ -189,7 +151,7 @@
                 }
             }         
             const categoryPost ={
-                CategoryName:document.getElementById('CategoryName').value
+                categoryName:document.getElementById('CategoryName').value
                
                 
             }
