@@ -41,16 +41,11 @@ public class FilmController {
     @GetMapping("/FilmByID/{FilmID}")
     public ResponseEntity<?> GetFilmByID(@PathVariable("FilmID") Long FilmID){
         Film film = filmService.findById(FilmID);
+        FilmChapterActorDTO filmChapterActorDTO= new FilmChapterActorDTO();
+        filmChapterActorDTO.loadData(film,chapterService,actorService,categoryService);
+        return new ResponseEntity<>(filmChapterActorDTO, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(new FilmChaptersDTO(film), HttpStatus.OK);
-    }
-    @GetMapping("/ahihi")
-    public ResponseEntity<?> GetFilmByIdfsdfD(){
-        Film film =filmService.findById(1L);
-        FilmChapterActorDTO v= new FilmChapterActorDTO();
-        v.loadData(film,chapterService,actorService,categoryService);
-        return new ResponseEntity<>(v, HttpStatus.OK);
-    }
     @PostMapping("/AllFilm")
     public ResponseEntity<?> postFilm(@ModelAttribute  FilmRequestDTO filmPost){
         Film film =filmService.saveFilm(filmPost);
@@ -68,8 +63,12 @@ public class FilmController {
     }
     @DeleteMapping("/FilmByID/{FilmID}")
     public ResponseEntity<?> DeleteFilm(@PathVariable("FilmID") Long FilmID){
-        filmService.deleteById(FilmID);
+        filmService.deleteFilmByID(FilmID);
         return new ResponseEntity<>("Xoa thanh cong", HttpStatus.NO_CONTENT);
     }
-
+    @PatchMapping("/FilmByID/{FilmID}")
+    public ResponseEntity<?> PatchFilm(@PathVariable("FilmID") Long FilmID,@ModelAttribute FilmRequestDTO filmRequestDTO){
+        Film film =filmService.updateFilm(FilmID,filmRequestDTO);
+        return new ResponseEntity<>(film, HttpStatus.OK);
+    }
 }
