@@ -217,29 +217,12 @@
             if(document.getElementById('Video').files[0]!=null){
                 formData.append('video', document.getElementById('Video').files[0]);
             }
-            if( document.getElementById('ChapterName').value!="" && document.getElementById('chapterDescription').value!=""){
+            if( document.getElementById('ChapterName').value!="" && document.getElementById('ChapterDescription').value!=""){
                 formData.append('chapterName', document.getElementById('ChapterName').value);
                 formData.append('chapterDescription', document.getElementById('ChapterDescription').value);
             }
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                  // Nhận kích thước của response từ server
-                  var responseSize = xhr.response.size;
-                  // Tính toán phần trăm request được xử lí
-                  var percentComplete = (xhr.response.byteLength / responseSize) * 100;
-                  // Hiển thị phần trăm request được xử lí cho người dùng
-                  console.log( "Loaded " + percentComplete.toFixed(0) + "%");
-                }
-            }
 
-            xhr.progress= function(event) {
-               
-                  // Tính toán phần trăm load
-                  var percentComplete = (event.loaded / event.total) * 100;
-                  // Hiển thị phần trăm load cho người dùng
-                  console.log( "Loading " + percentComplete.toFixed(0) + "%");
-                
-              };
+
             xhr.onload = function() {
                 if (xhr.status === 201) {
                     var ResponseJson=xhr.responseText

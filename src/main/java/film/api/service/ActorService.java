@@ -3,6 +3,7 @@ package film.api.service;
 import film.api.DTO.ActorDTO;
 import film.api.DTO.UserByAdminDTO;
 import film.api.models.Actor;
+import film.api.models.Chapter;
 import film.api.models.User;
 import film.api.repository.ActorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,9 @@ public class ActorService {
 
     public List<Actor> searchActors(String actorName) {
         return actorRepository.searchActors(actorName);
+    }
+
+    public List<Actor> findActorByChapterId(Long chapterId){
+        return actorRepository.findActorByChapterId(chapterId);
     }
 }

@@ -16,6 +16,9 @@ import java.util.Optional;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+    public List<Category> getCategoryByFilmID(Long filmID){
+        return categoryRepository.getCategoryByFilmID(filmID);
+    }
     public List<CategoryDTO> getList(){
         List<CategoryDTO> categoryDTO = new ArrayList<>();
         List<Category> categories = categoryRepository.findAll();

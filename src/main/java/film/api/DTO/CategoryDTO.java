@@ -1,5 +1,6 @@
 package film.api.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDTO {
 
     private Long id;

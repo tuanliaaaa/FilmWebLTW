@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT a FROM Category a WHERE a.CategoryName LIKE %:key%")
     List<Category> findCategoryByName(@Param("key") String key);
+    @Query("SELECT c FROM Category c JOIN CategoryFilm cf ON c.id = cf.Category.id JOIN Film f ON cf.Film.Id = f.Id WHERE f.Id =:filmID")
+    List<Category> getCategoryByFilmID(@Param("filmID") Long filmID);
 }
