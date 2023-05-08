@@ -223,28 +223,29 @@
                 ListCategory.push(categoryParent.getAttribute("value"));
             })
             
-            formData.append('FilmName',document.getElementById('FilmName').value);
-            formData.append('Description',document.getElementById('Description').value);
-            formData.append('FilmBollen',document.getElementById('Type').value);
-            formData.append('ListActor',ListActor);
-            formData.append('ListCategory',ListCategory);
-            formData.append('Image', document.getElementById('Image').files[0]);
-            formData.append('BannerFilmName', document.getElementById('Banner').files[0]);
-            formData.append('TrailerFilm', document.getElementById('Trainner').files[0]);
-            formData.append('Video', document.getElementById('Video').files[0]);
-           
-            formData.append('ChapterName', document.getElementById('ChapterName').value);
-            formData.append('ChapterDescription', document.getElementById('ChapterDescription').value);
+            formData.append('filmName',document.getElementById('FilmName').value);
+            formData.append('description',document.getElementById('Description').value);
+            formData.append('filmBollen',document.getElementById('Type').value);
 
+            formData.append('listCategory',ListCategory);
+            formData.append('listActor',ListActor);
+            if(document.getElementById('Image').files[0]!=null){
+                formData.append('image', document.getElementById('Image').files[0]);
+            }
+            if(document.getElementById('Banner').files[0]!=null){
+                formData.append('bannerFilmName', document.getElementById('Banner').files[0]);
+            }
+            if(document.getElementById('Trainner').files[0]!=null){
+                formData.append('trailerFilm', document.getElementById('Trainner').files[0]);
+            }
+            if(document.getElementById('Video').files[0]!=null){
+                formData.append('video', document.getElementById('Video').files[0]);
+            }
+            if( document.getElementById('ChapterName').value!="" && document.getElementById('ChapterDescription').value!=""){
+                formData.append('chapterName', document.getElementById('ChapterName').value);
+                formData.append('chapterDescription', document.getElementById('ChapterDescription').value);
+            }
 
-            xhr.progress= function(event) {
-               
-                  // Tính toán phần trăm load
-                  var percentComplete = (event.loaded / event.total) * 100;
-                  // Hiển thị phần trăm load cho người dùng
-                  console.log( "Loading " + percentComplete.toFixed(0) + "%");
-                
-              };
             xhr.onload = function() {
                 if (xhr.status === 200) {
                   window.location='/Admin/EditFilm/'+window.location.pathname.substring(16)
@@ -297,21 +298,21 @@
                 document.getElementById('ChapterByFilm').style.display='none';
             }
             FilmHTml+='</select></div><div class="content__Film__input"><label for="Type">Category</label><select id="Category"></select></div><div class="content__Film__input"><div class="CategoryList" id="CategoryList">';
-            for( var i =0;i<Response.categorys.length;i++)
+            for( var i =0;i<Response.categories.length;i++)
             {
-                FilmHTml+='<div class="Category__select" value="'+Response.categorys[i].id+'">'+Response.categorys[i].CategoryName+'</div>';
-                CategoryListNow.push(Response.categorys[i].id);
+                FilmHTml+='<div class="Category__select" value="'+Response.categories[i].id+'">'+Response.categories[i].categoryName+'</div>';
+                CategoryListNow.push(Response.categories[i].id);
 
             }    
                 
             FilmHTml+='</select></div><div class="content__Film__input"><label for="Actor">Actor</label><select id="Actor"></select></div><div class="content__Film__input"><div class="ActorList" id="ActorList">';
-                for( var i =0;i<Response.chapters[0].actor.length;i++)
+                for( var i =0;i<Response.chapters[0].actors.length;i++)
                 {
-                    FilmHTml+='<div class="Actor__select" value="'+Response.chapters[0].actor[i].id+'">'+Response.chapters[0].actor[i].ActorName+'</div>';
-                    ActorListNow.push(Response.chapters[0].actor[i].id);
+                    FilmHTml+='<div class="Actor__select" value="'+Response.chapters[0].actors[i].id+'">'+Response.chapters[0].actors[i].actorName+'</div>';
+                    ActorListNow.push(Response.chapters[0].actors[i].id);
     
                 }   
-            FilmHTml+='</div></div></div><div class="content__Film__input"><label for="Description">Description</label><textarea name="" id="Description" >'+Response.FilmDescription+'</textarea></div></div><div class="Film__input__file"><div class="input__file"><label for="">Image</label><div class="Change__inputFile"><img  alt="" src="'+Response.FilmImage+'"><input type="file"  class="input-file" accept="image/*" id="Image"></div></div><div class="input__file"><label for="">Banner</label><div class="Change__inputFile"><img  alt="" src="'+Response.BannerFilmName+'"><input type="file" class="input-file" accept="image/*" id="Banner"></div></div><div class="input__file"><label for="">Trainner</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.TrailerFilm+'" autoplay></video><input type="file" class="input-file" accept="video/*" id="Trainner"><div class="pause-playVideo"><i class="fa-solid fa-play fa-beat"></i></div></div></div><div class="input__file"><label for="">Video</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.chapters[0].Video+'" autoplay></video><input type="file"  class="input-file" accept="video/*" id="Video"><div class="pause-playVideo" ><i class="fa-solid fa-play fa-beat"></i></div></div></div></div>'
+            FilmHTml+='</div></div></div><div class="content__Film__input"><label for="Description">Description</label><textarea name="" id="Description" >'+Response.filmDescription+'</textarea></div></div><div class="Film__input__file"><div class="input__file"><label for="">Image</label><div class="Change__inputFile"><img  alt="" src="'+Response.filmImage+'"><input type="file"  class="input-file" accept="image/*" id="Image"></div></div><div class="input__file"><label for="">Banner</label><div class="Change__inputFile"><img  alt="" src="'+Response.bannerFilmName+'"><input type="file" class="input-file" accept="image/*" id="Banner"></div></div><div class="input__file"><label for="">Trainner</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.trailerFilm+'" autoplay></video><input type="file" class="input-file" accept="video/*" id="Trainner"><div class="pause-playVideo"><i class="fa-solid fa-play fa-beat"></i></div></div></div><div class="input__file"><label for="">Video</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.chapters[0].video+'" autoplay></video><input type="file"  class="input-file" accept="video/*" id="Video"><div class="pause-playVideo" ><i class="fa-solid fa-play fa-beat"></i></div></div></div></div>'
             FilmElement.innerHTML=FilmHTml;
             }else if(xhttp.status==204){
                

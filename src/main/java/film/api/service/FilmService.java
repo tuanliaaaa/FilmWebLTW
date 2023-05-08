@@ -63,7 +63,7 @@ public class FilmService {
 
         // Lưu đường dẫn của file vào CSDL
         String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/"+"images"+"/")
+                .path("/"+typeFile+"/")
                 .path(fileNameNew)
                 .toUriString();
         return  fileUrl;
@@ -159,10 +159,114 @@ public class FilmService {
 
         return film;
     }
+    public Film updateFilm(Long filmID,FilmRequestDTO filmPatch){
+        Film film = filmRepository.findById(filmID).orElse(null);
+        Chapter chapter = chapterRepository.getChapterByFilmID(film.getId()).get(0);
+
+        if(filmPatch.getFilmName()!=null||filmPatch.getFilmName().replaceAll("\\s+", "").equals("")==false)
+        {
+           film.setFilmName(filmPatch.getFilmName());
+           chapter.setChapterName(filmPatch.getFilmName());
+        }
+        if(filmPatch.getDescription()!=null||filmPatch.getDescription().equals("")==false)
+        {
+            film.setFilmDescription(filmPatch.getDescription());
+            chapter.setChapterDescription(filmPatch.getDescription());
+        }
+
+        if(filmPatch.getListActor()!=null && filmPatch.getListCategory()!=null)
+        {
+            String[] actorString = filmPatch.getListCategory().split(",");
+            Long[] actorList = new Long[actorString.length];
+            for(int i = 0; i < actorString.length; i++) {
+                actorList[i] = Long.parseLong(actorString[i]);
+            }
+            String[] categoryString = filmPatch.getListCategory().split(",");
+            Long[] categoryList = new Long[categoryString.length];
+            for(int i = 0; i < categoryString.length; i++) {
+                categoryList[i] = Long.parseLong(categoryString[i]);
+            }
+
+            if(actorList.length==0)throw new IllegalArgumentException("Vui Lòng nhập Actor");
+            if(categoryList.length==0)throw new IllegalArgumentException("Vui Lòng nhập Category");
+            List<ActorChapter>  actorChapterList = actorChapterRepository.findActorChapterByChapterId(chapter.getId());
+            for(ActorChapter actorChapter:actorChapterList){
+                actorChapterRepository.delete(actorChapter);
+            }
+
+
+            for(Long i :actorList){
+                Actor actor =actorRepository.findById(i).orElse(null);
+                if(actor!=null){
+                    ActorChapter  actorChapter = new ActorChapter(null,actor,chapter);
+                    actorChapterRepository.save(actorChapter);
+                }
+            }
+
+
+            List<CategoryFilm>  categoryFilms = categoryFilmRepository.findCategoryFilmByFilmID(film.getId());
+            for(CategoryFilm categoryFilm:categoryFilms){
+                categoryFilmRepository.delete(categoryFilm);
+            }
+
+            for(Long i :categoryList){
+                Category category =categoryRepository.findById(i).orElse(null);
+                if(category!=null){
+                    CategoryFilm  categoryFilm = new CategoryFilm(null,category,film);
+                    categoryFilmRepository.save(categoryFilm);
+                }
+            }
+        }
+        if(filmPatch.getImage()!=null)
+        {
+            String image = saveFile(filmPatch.getImage(),"images");
+            film.setFilmImage(image);
+            chapter.setChapterImage(image);
+        }
+        if(filmPatch.getBannerFilmName()!=null)
+        {
+            String banner = saveFile(filmPatch.getBannerFilmName(),"images");
+            film.setBannerFilmName(banner);
+
+        }
+        if(filmPatch.getTrailerFilm()!=null)
+        {
+            String trailer =saveFile(filmPatch.getTrailerFilm(),"videos");
+            film.setTrailerFilm(trailer);
+            chapter.setTrailerChapter(trailer);
+        }
+        if(filmPatch.getFilmBollen()==1)
+        {
+            if(filmPatch.getChapterName()==null) throw new IllegalArgumentException("Vui Lòng nhập tên Chapter 1");
+            if(filmPatch.getChapterDescription()==null) throw new IllegalArgumentException("Vui Lòng nhập mô tả Chapter 1");
+            film.setFilmBollen(filmPatch.getFilmBollen());
+            chapter.setChapterName(filmPatch.getChapterName());
+            chapter.setChapterDescription(filmPatch.getChapterDescription());
+        }
+
+        String status="";
+        if(filmPatch.getVideo()!=null){
+            String video =saveFile(filmPatch.getVideo(),"videos");
+            chapter.setVideo(video);
+            chapter.setChapterPremieredDay(LocalDateTime.now());
+            status="Đã Ra";
+        }else{
+            status="Đang Ra";
+        }
+        chapterRepository.save(chapter);
+        filmRepository.save(film);
+
+        return film;
+    }
     public List<Film> findUsersByFilmNameContain(String filmName) {
         return filmRepository.findUsersByFilmNameContain(filmName);
     }
-
+    public  void deleteFilmByID(Long filmID){
+//        List<CategoryFilm> categoryFilms =categoryFilmRepository.findCategoryFilmByFilmID(filmID);
+//        for(CategoryFilm categoryFilm:categoryFilms){
+//            categoryFilmRepository.delete(categoryFilm);
+//        }
+    }
     public Film save(Film film) {
         return filmRepository.save(film);
     }
