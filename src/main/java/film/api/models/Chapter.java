@@ -2,11 +2,14 @@ package film.api.models;
 
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -28,8 +31,9 @@ public class Chapter {
     private String Video;
 
     @NotNull
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "filmId")
+    @JoinColumn(name = "film_id")
     private Film Film;
 
     @NotNull
@@ -41,11 +45,11 @@ public class Chapter {
     @NotNull
     private String ChapterImage;
 
-    @NotNull
-    private Date ChapterCreateDay;
+   @Column(nullable = true)
+    private LocalDateTime ChapterCreateDay;
 
-    @NotNull
-    private Date ChapterPremieredDay;
+    @Column(nullable = true)
+    private LocalDateTime ChapterPremieredDay;
 
     @NotNull
     private String ChapterStatus;

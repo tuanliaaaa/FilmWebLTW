@@ -282,12 +282,12 @@
             var tableChapterElement =document.getElementById('table__Chapters');
             var tableChapterHtml='<thead><tr><th>ChapterNumber</th><th>ChapterName</th><th>Description</th><th>Action</th></tr></thead><tbody>       ';
             for(var i=0;i<Response.chapters.length;i++){
-                tableChapterHtml+='  <tr><td>'+Response.chapters[i].ChapterNumber+'</td><td>'+Response.chapters[i].ChapterName+'</td> <td>'+Response.chapters[i].ChapterDescription+'</td><td><div class="action__Chapter"><div class="action__Chapter__Edit"><a href="/Admin/EditChapter/'+Response.chapters[i].id+'"><i class="fa-solid fa-pen-to-square"></i><a></div><div class="action__Chapter__Delete" onclick="DeleteChapter('+Response.chapters[i].id+')"><i class="fa-solid fa-trash"></i></div></div></td></tr>'
+                tableChapterHtml+='  <tr><td>'+Response.chapters[i].chapterNumber+'</td><td>'+Response.chapters[i].chapterName+'</td> <td>'+Response.chapters[i].chapterDescription+'</td><td><div class="action__Chapter"><div class="action__Chapter__Edit"><a href="/Admin/EditChapter/'+Response.chapters[i].id+'"><i class="fa-solid fa-pen-to-square"></i><a></div><div class="action__Chapter__Delete" onclick="DeleteChapter('+Response.chapters[i].id+')"><i class="fa-solid fa-trash"></i></div></div></td></tr>'
             }
             tableChapterHtml+='</tbody>';
             tableChapterElement.innerHTML=tableChapterHtml;
-            FilmHTml+='<div class="Film__input__Text"><div class="content__Film__input"><label for="FilmName">Film Name</label><input type="text"  id="FilmName" value="'+Response.FilmName+'"></div><div class="content__Film__input"><label for="Type">Type</label><select id="Type">';
-            if(Response.FilmBollen)      {
+            FilmHTml+='<div class="Film__input__Text"><div class="content__Film__input"><label for="FilmName">Film Name</label><input type="text"  id="FilmName" value="'+Response.filmName+'"></div><div class="content__Film__input"><label for="Type">Type</label><select id="Type">';
+            if(Response.filmBollen)      {
                 FilmHTml+='<option value="1" selected >Phim Bộ</option>';
                 document.getElementById('Chapter__infor').style.display='none';
             }
@@ -353,7 +353,7 @@
                     {
                         if(CategoryListNow.includes(Response[i].id)){}
                         else{
-                        selectCategoryHtml+='<option value="'+Response[i].id+'">'+Response[i].CategoryName+'</option>'
+                        selectCategoryHtml+='<option value="'+Response[i].id+'">'+Response[i].categoryName+'</option>'
                         }
                     }
                     selectCategoryElement.innerHTML=selectCategoryHtml;
@@ -372,7 +372,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetCategory",false);
+            xhttp.open("GET", "/ApiV1/AllCategory",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");
@@ -395,7 +395,7 @@
                     {
                         if(ActorListNow.includes(Response[i].id)){}
                         else{
-                            selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].ActorName+'</option>'
+                            selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].actorName+'</option>'
                         }
                     }
                     selectActorElement.innerHTML=selectActorHtml;
@@ -414,7 +414,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetActor",false);
+            xhttp.open("GET", "/ApiV1/AllActor",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");
