@@ -1,7 +1,9 @@
 package film.api.service;
 
 import film.api.DTO.ActorDTO;
+import film.api.DTO.UserByAdminDTO;
 import film.api.models.Actor;
+import film.api.models.User;
 import film.api.repository.ActorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +29,24 @@ public class ActorService {
         return actorRepository.findById(id);
     }
 
-    public Actor updateActor(Long id, Actor updateActor) {
-        Actor actor = actorRepository.findById(id).get();
-        actor.setActorName(updateActor.getActorName());
-        actor.setAge(updateActor.getAge());
-        actor.setNativeLand(updateActor.getNativeLand());
-        actor.setSex(actor.getSex());
+
+    public Actor updateActor(Long id, ActorDTO actorPatchDTO) {
+
+        Actor actor = actorRepository.findById(id).orElse(null);
+
+        if(actorPatchDTO.getSex() != null) {
+            actor.setSex(actorPatchDTO.getSex());
+        }
+        if(actorPatchDTO.getNativeLand() != null) {
+            actor.setNativeLand(actorPatchDTO.getNativeLand());
+        }
+        if(actorPatchDTO.getAge() != null) {
+            actor.setAge(actorPatchDTO.getAge());
+        }
+        if(actorPatchDTO.getActorName() != null) {
+            actor.setActorName(actorPatchDTO.getActorName());
+        }
+
         return actorRepository.save(actor);
     }
 

@@ -21,20 +21,16 @@ public class ActorController {
 
     @GetMapping("/AllActor")
     public ResponseEntity<?> getAllActors() {
-        String nhi = "toi te";
+
 
         return new ResponseEntity<>(actorService.getList(), HttpStatus.OK);
     }
 
-    @PostMapping("AllActor")
-    public ResponseEntity<?> addActor(@RequestBody ActorDTO actorPost) {
+    @PostMapping("/AllActor")
+    public ResponseEntity<?> addActor(@RequestBody Actor actor) {
 
-        Actor savedActor = actorService.addActor(Actor.builder()
-                .ActorName(actorPost.getActorName())
-                .Age(actorPost.getAge())
-                .nativeLand(actorPost.getNativeLand())
-                .Sex(actorPost.getSex()).build());
-        return new ResponseEntity<>(savedActor, HttpStatus.OK);
+
+        return new ResponseEntity<>(actorService.addActor(actor), HttpStatus.CREATED);
     }
 
     @GetMapping("/ActorByID/{id}")
@@ -49,19 +45,14 @@ public class ActorController {
 
     @PatchMapping("/ActorByID/{ActorByID}")
     public ResponseEntity<Object> updateActor(@PathVariable("ActorByID") Long id, @RequestBody ActorDTO actorPost) {
-        Actor updateActor = actorService.addActor(Actor.builder()
-                .ActorName(actorPost.getActorName())
-                .Age(actorPost.getAge())
-                .nativeLand(actorPost.getNativeLand())
-                .Sex(actorPost.getSex()).build());
-        Actor actor = actorService.updateActor(id, updateActor);
-        return new ResponseEntity<>(actor, HttpStatus.OK);
+
+        return new ResponseEntity<>(actorService.updateActor(id,actorPost), HttpStatus.OK);
     }
 
     @DeleteMapping("/ActorByID/{ActorByID}")
     public ResponseEntity<?> deleteActor(@PathVariable Long ActorByID) {
         actorService.deleteById(ActorByID);
-        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
+        return new ResponseEntity<>("Xóa thành công", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/ActorByName/{ActorName}")

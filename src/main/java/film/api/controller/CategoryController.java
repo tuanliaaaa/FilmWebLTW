@@ -21,7 +21,12 @@ public class CategoryController {
 
         return new ResponseEntity<>(categoryService.getList(), HttpStatus.OK);
     }
-    @GetMapping("/{CategoryId}")
+    @GetMapping("/CategoryByName/{Categoryname}")
+    public ResponseEntity<?> searchCategory(@PathVariable String Categoryname) {
+        List<Category> categories = categoryService.searchCategory(Categoryname);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+    @GetMapping("/CategoryById/{CategoryId}")
     public ResponseEntity<?> findById(@PathVariable("CategoryId") Long id) {
         return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }

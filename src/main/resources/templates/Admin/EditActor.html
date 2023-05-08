@@ -75,39 +75,9 @@
                 </div>
 
             </div>
-            <div class="ChapterByActor">
-                <div class="listChapter__header">
-                    <div class="listChapter__header__nav">
-                        <div class="listChapter__header__nav__Show">
-                            <p>ChapterListByActor</p>
-                        </div>
-                        <div class="listChapter__header__nav__Search">
-                            <div class="nav__search__Chapter">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="listChapter__body">
-                    <table id="table__Chapters">
-                        <thead>
-                            <tr>
-                                <th>ChapterName</th>
-                                <th>PassWord</th>
-                                <th>FullName</th>
-                                <th>Email</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                          
-                            
-                     
-                    </table>
-                </div>
+
                 
-            </div>
+
         </div>
     </div>
     <div id="footer">
@@ -135,21 +105,15 @@
                 var ResponseJson=xhttp.responseText;
                 var Response= JSON.parse(ResponseJson);
                 
-                var tableChapterElement =document.getElementById('table__Chapters');
-                var tableHtml=' <thead><tr><th>ChapterName</th><th>Image</th><th>ChapterNUmber</th><th>Description</th></tr></thead><tbody>';
-                
-                for (var i=0;i<Response.chaptes.length;i++){
-                    tableHtml+='<tr><td>'+Response.chaptes[i].ChapterName+'</td><td> <div class="imgchaptes"><img src="'+Response.chaptes[i].ChapterImage+'" alt="" ></div></td><td><p>'+Response.chaptes[i].ChapterNumber+'</p></td><td>'+Response.chaptes[i].ChapterDescription+'</td></tr>'
-                }
-                tableHtml+='</tbody>';
-                tableChapterElement.innerHTML=tableHtml;
+
+
                 var actorByIDHtml='';
                 var actorByIDElement =document.getElementById('actorEdit__inFor');
-                actorByIDHtml+='  <div class="Actor__infor__ActorName"><label for="ActorName">ActorName</label><input type="text" value="'+Response.ActorName+'" id="ActorName" ></div><div class="Actor__infor__ActorAge"><label for="Age">Age</label><input type="int" value="'+Response.Age+'" id="Age" ></div><div class="Actor__infor__ActorNativeland"><label for="Nativeland" >ActorNativeland</label><input type="text" id="Nativeland" value="'+Response.nativeLand+'"></div><div class="Actor__infor__ActorSex"><label for="Sex">Sex</label><select id="Sex" required>'
-                if(Response.Sex){
-                    actorByIDHtml+='<option value="true" selected>Nam</option><option value="false" >Nữ</option>'
+                actorByIDHtml+='  <div class="Actor__infor__ActorName"><label for="ActorName">ActorName</label><input type="text" value="'+Response.actorName+'" id="ActorName" ></div><div class="Actor__infor__ActorAge"><label for="Age">Age</label><input type="int" value="'+Response.age+'" id="Age" ></div><div class="Actor__infor__ActorNativeland"><label for="Nativeland" >ActorNativeland</label><input type="text" id="Nativeland" value="'+Response.nativeLand+'"></div><div class="Actor__infor__ActorSex"><label for="Sex">Sex</label><select id="Sex" required>'
+                if(Response.sex==1){
+                    actorByIDHtml+='<option value="1" selected>Nam</option><option value="0" >Nữ</option>'
                 }else{
-                    actorByIDHtml+='<option value="true" >Nam</option><option value="false" selected>Nữ</option>'
+                    actorByIDHtml+='<option value="0" >Nam</option><option value="1" selected>Nữ</option>'
                 }
                 actorByIDHtml+='</select></div>' ;
 
@@ -200,15 +164,15 @@
                 }else{
                     var ResponseJson=xhttp.responseText;
                 var Response= JSON.parse(ResponseJson);
-                alert(Object.values(Response)[0]);
+
                 }
             }         
          
             const actorPost ={
-                ActorName:document.getElementById('ActorName').value,
-                Age:document.getElementById('Age').value,
+                actorName:document.getElementById('ActorName').value,
+                age:document.getElementById('Age').value,
                 nativeLand:document.getElementById('Nativeland').value,
-                Sex:document.getElementById('Sex').value
+                sex:document.getElementById('Sex').value
                
                 
             }
