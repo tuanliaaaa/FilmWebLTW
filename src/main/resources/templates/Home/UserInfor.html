@@ -99,7 +99,7 @@
                 var ResponseJson=xhttp.responseText;
                 var Response= JSON.parse(ResponseJson);
                   var userByIDElement =document.getElementById('userEdit__inFor');
-                  var userByIDHtml='<div class="User__infor__UserName"><label for="UserName">UserName</label><div class="infor__notchange">'+Response.UserName+'</div></div><div class="User__infor__FullName"><label for="FullName">FullName</label><input type="text" id="FullName" value="'+Response.FullName+ '"></div>';
+                  var userByIDHtml='<div class="User__infor__UserName"><label for="UserName">UserName</label><div class="infor__notchange">'+Response.username+'</div></div><div class="User__infor__FullName"><label for="FullName">FullName</label><input type="text" id="FullName" value="'+Response.fullName+ '"></div>';
                   userByIDElement.innerHTML=userByIDHtml;
                 }else if(xhttp.status==204){
                    
@@ -147,7 +147,7 @@
             }         
             const userPost ={
                 
-                FullName: document.getElementById('FullName').value
+                fullName: document.getElementById('FullName').value
             }
             var userPostJson =JSON.stringify(userPost);
             //khai báo phương thức và đường dẫn để request

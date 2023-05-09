@@ -122,17 +122,17 @@ function signup()
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() 
     {
-        var tokenResponseJson=xhttp.responseText
-        var tokenResponse= JSON.parse(tokenResponseJson)
+
         if(xhttp.status==201)
         {
-            localStorage.setItem("Token", tokenResponse['access']);
-            window.location='/Home';
+             var tokenResponseJson=xhttp.responseText
+               var tokenResponse= JSON.parse(tokenResponseJson)
+            window.location='/Login';
             
         }
         else
         {
-            if(tokenResponse['UserName']){
+            if(tokenResponse['message']){
                 var userNameError=document.querySelector(".username__Error.Error");
                 userNameError.innerHTML=tokenResponse['UserName'];
                 userNameError.style.display="block";
@@ -143,12 +143,12 @@ function signup()
         }
     }         
     const userInfo={
-        UserName:userNameInput.value,
-        Password:passwordInput.value,
-        FullName:fullNameInput.value
+        username:userNameInput.value,
+        password:passwordInput.value,
+        fullName:fullNameInput.value
     }
     postData=JSON.stringify(userInfo)
-    xhttp.open("POST", "/ApiV1/Signup",false);
+    xhttp.open("POST", "/register",false);
     xhttp.setRequestHeader("Content-type","application/json")
     xhttp.send(postData)
 }
