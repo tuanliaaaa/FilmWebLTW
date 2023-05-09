@@ -66,6 +66,6 @@ public class AdminControlles {
     }
     @GetMapping("/EditChapter/{ChapterID}")
     public String EditChapter() {
-        return "Admin/EditChapter";
+        return "Admin/EditChapterFilm";
     }
 }

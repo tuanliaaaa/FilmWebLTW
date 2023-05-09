@@ -71,4 +71,18 @@ public class FilmController {
         Film film =filmService.updateFilm(FilmID,filmRequestDTO);
         return new ResponseEntity<>(film, HttpStatus.OK);
     }
+    @GetMapping("/FilmChapterIDChapterID/{chapterId}")
+    public ResponseEntity<?> FilmChapterIDChapterID(@PathVariable("chapterId") Long chapterId){
+        Film film = filmService.filmByIdChapter(chapterId);
+        FilmChaptersDTO filmChaptersDTO = new FilmChaptersDTO(film);
+        List<Chapter> chapterList = chapterService.chapterByChapterId(chapterId);
+        List<ChapterDTO> chapterDTOList = new ArrayList<>();
+        for (Chapter chapter : chapterList) {
+            ChapterDTO dto = new ChapterDTO();
+            dto.ChapterDTO(chapter);
+            chapterDTOList.add(dto);
+        }
+        filmChaptersDTO.setChapters(chapterDTOList);
+        return new ResponseEntity<>(filmChaptersDTO,HttpStatus.OK);
+    }
 }

@@ -106,12 +106,18 @@
             actorListParent.forEach(function(actorParent,index){
                 ListActor.push(actorParent.getAttribute("value"));
             })
-            formData.append('ListActor',ListActor);
-            formData.append('ChapterName',document.getElementById('ChapterName').value);
-            formData.append('ChapterDescription',document.getElementById('ChapterDescription').value);
-            formData.append('ChapterImage', document.getElementById('ChapterImage').files[0]);
-            formData.append('TrailerChapter', document.getElementById('TrainnerChapter').files[0]);
-            formData.append('Video', document.getElementById('Video').files[0]);
+            formData.append('listActor',ListActor);
+            formData.append('chapterName',document.getElementById('ChapterName').value);
+            formData.append('chapterDescription',document.getElementById('ChapterDescription').value);
+            if(document.getElementById('ChapterImage').files[0]!=null){
+                formData.append('chapterImage', document.getElementById('ChapterImage').files[0]);
+            }
+            if(document.getElementById('TrainnerChapter').files[0]!=null){
+                formData.append('trailerChapter', document.getElementById('TrainnerChapter').files[0]);
+            }
+            if(document.getElementById('Video').files[0]!=null){
+                   formData.append('video', document.getElementById('Video').files[0]);
+            }
 
             xhr.progress= function(event) {
                
@@ -125,7 +131,7 @@
                 if (xhr.status === 200) {
                     var ResponseJson=xhr.responseText
                     var Response= JSON.parse(ResponseJson)
-                    window.location='/Admin/EditFilm/'+Response.Film.id;
+                    window.location='/Admin/EditFilm/'+Response.film.id;
                     
                 } else if(xhr.status === 304){
                     window.location='/Login';
@@ -160,7 +166,7 @@
                     {
                         if(actorListNow.includes(Response[i].id)){}
                         else{
-                            selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].ActorName+'</option>'
+                            selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].actorName+'</option>'
                         }
                     }
                     selectActorElement.innerHTML=selectActorHtml;
@@ -179,7 +185,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetActor",false);
+            xhttp.open("GET", "/ApiV1/AllActor",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");
@@ -196,14 +202,14 @@
                     var ResponseJson=xhttp.responseText
                     var Response= JSON.parse(ResponseJson)
                     var chapterElement =document.getElementById('ChapterInfor');
-                    var chapterHTml =' <div class="Chapter__input__Text"><div class="content__Chapter__input"><label for="ChapterName">Chapter Name</label><input type="text"  id="ChapterName" value="'+Response.ChapterName+'"></div><div class="content__Chapter__input"><label for="Type">Actor</label><select id="Actor"></select></div><div class="content__Chapter__input"><div class="ActorList" id="ActorList">'
-                    for( var i =0;i<Response.actor.length;i++)
+                    var chapterHTml =' <div class="Chapter__input__Text"><div class="content__Chapter__input"><label for="ChapterName">Chapter Name</label><input type="text"  id="ChapterName" value="'+Response.chapterName+'"></div><div class="content__Chapter__input"><label for="Type">Actor</label><select id="Actor"></select></div><div class="content__Chapter__input"><div class="ActorList" id="ActorList">'
+                    for( var i =0;i<Response.actors.length;i++)
                     {
-                        chapterHTml+='<div class="Actor__select" value="'+Response.actor[i].id+'">'+Response.actor[i].ActorName+'</div>';
-                        actorListNow.push(Response.actor[i].id);
+                        chapterHTml+='<div class="Actor__select" value="'+Response.actors[i].id+'">'+Response.actors[i].actorName+'</div>';
+                        actorListNow.push(Response.actors[i].id);
         
                     }    
-                    chapterHTml+='</div></div><div class="content__Chapter__input"><label for="Description">Chapter Description</label><textarea name="" id="ChapterDescription" >'+Response.ChapterDescription+'</textarea></div></div>   <div class="Chapter__input__file"><div class="input__file"><label for="">ChapterImage</label><div class="Change__inputFile"><img  alt="" src="'+Response.ChapterImage+'"><input type="file"  class="input-file" accept="image/*" id="ChapterImage"></div></div><div class="input__file"><label for="">TrainnerChapter</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.TrailerChapter+'" autoplay></video><input type="file" class="input-file" accept="video/*" id="TrainnerChapter"><div class="pause-playVideo"><i class="fa-solid fa-play fa-beat"></i></div></div></div><div class="input__file"><label for="">Video</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.Video+'" autoplay></video><input type="file"  class="input-file" accept="video/*" id="Video"><div class="pause-playVideo" ><i class="fa-solid fa-play fa-beat"></i></div></div></div></div>';
+                    chapterHTml+='</div></div><div class="content__Chapter__input"><label for="Description">Chapter Description</label><textarea name="" id="ChapterDescription" >'+Response.chapterDescription+'</textarea></div></div>   <div class="Chapter__input__file"><div class="input__file"><label for="">ChapterImage</label><div class="Change__inputFile"><img  alt="" src="'+Response.chapterImage+'"><input type="file"  class="input-file" accept="image/*" id="ChapterImage"></div></div><div class="input__file"><label for="">TrailerChapter</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.trailerChapter+'" autoplay></video><input type="file" class="input-file" accept="video/*" id="TrainnerChapter"><div class="pause-playVideo"><i class="fa-solid fa-play fa-beat"></i></div></div></div><div class="input__file"><label for="">Video</label><div class="Change__inputFile"><video id="video-preview" src="'+Response.video+'" autoplay></video><input type="file"  class="input-file" accept="video/*" id="Video"><div class="pause-playVideo" ><i class="fa-solid fa-play fa-beat"></i></div></div></div></div>';
                     chapterElement.innerHTML=chapterHTml;
                     
                 }else if(xhttp.status==204){

@@ -9,4 +9,24 @@ public class HomeControllers {
         public String hello() {
             return "Home/Login";
         }
+        @GetMapping("/Home")
+        public String home() {
+        return "Home/Home";
+    }
+        @GetMapping("/DetailVideo/{IDChapter}")
+        public String DetailVideo() {
+            return "Home/Detail";
+        }
+        @GetMapping("/Signup")
+        public String Signup() {
+            return "Home/Signup";
+        }
+        @GetMapping("/Home/UserInfor")
+        public String UserInfor() {
+            return "Home/UserInfor";
+        }
+        @GetMapping("/Home/UserChangePassword")
+        public String UserChangePassword() {
+        return "Home/UserChangePassword";
+    }
 }

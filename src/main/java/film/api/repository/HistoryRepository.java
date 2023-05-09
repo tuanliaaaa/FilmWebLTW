@@ -20,5 +20,9 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
             "WHERE (history.history_view >= :fromDay AND history.history_view < :toDay) " +
             "GROUP BY history.Chapter_id ORDER BY count DESC")
     List<Object[]> getChaptersHotCount(@Param("fromDay") LocalDateTime fromDay, @Param("toDay") LocalDateTime toDay);
+    @Query("SELECT h from History h where h.User.Id = :userID and h.Chapter.Id = :idChapter")
+    History historyByUserIDAndChapterID(@Param("userID") Long userID, @Param("idChapter") Long idChapter);
 
+    @Query("SELECT user.Id from User user WHERE user.username = :key")
+    Long useridByUserName(@Param("key") String key);
 }

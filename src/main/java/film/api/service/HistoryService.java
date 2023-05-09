@@ -1,9 +1,11 @@
 package film.api.service;
 
 import film.api.DTO.ChapterHotDTO;
+import film.api.DTO.HistoryRequestDTO;
 import film.api.models.Actor;
 import film.api.models.Chapter;
 import film.api.models.History;
+import film.api.models.User;
 import film.api.repository.ChapterRepository;
 import film.api.repository.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,32 @@ public class HistoryService {
             return chapterHotDTOs;
         }
 
+    public History getHistory(Long idChapter,Long userID){
+
+//        Long userid = historyRepository.useridByUserName(username);
+        History history = historyRepository.historyByUserIDAndChapterID(userID,idChapter);
+        return history;
+    }
+    public Long getUserID(String username){
+        Long userid = historyRepository.useridByUserName(username);
+        return userid;
+    }
+    public History saveHistory(History history){
+        return historyRepository.save(history);
+    }
+    public History  updateHistory(User user, Chapter chapter, HistoryRequestDTO historyPatch){
+        History history = historyRepository.historyByUserIDAndChapterID(user.getId(),chapter.getId());
+        if(historyPatch.getRate()!=null)
+        {
+            history.setRate(historyPatch.getRate());
+        }
+        if(historyPatch.getHistoryView()!=null){
+            history.setHistoryView(historyPatch.getHistoryView());
+        }
+        if(historyPatch.getWatchedTime()!=null){
+            history.setWatchedTime(historyPatch.getWatchedTime());
+        }
+        return historyRepository.save(history);
+    }
 
 }

@@ -15,10 +15,13 @@ function GetHistoryByChapterIDAndUserLogin(){
     {
         if(xhttp.status==200)
         {
+
             var historyUserJson=xhttp.responseText
             var historyUser= JSON.parse(historyUserJson)
-            rating=historyUser.Rate;
-            watchedTime=historyUser.WatchedTime;
+
+            rating=historyUser.rate;
+
+            watchedTime=historyUser.watchedTime;
             document.querySelectorAll('.star').forEach(function(star) {
                
                 var children = star.parentNode.children;
@@ -69,7 +72,7 @@ function GetChapterListByChapterID(){
             var CategoryFilmNameElement = document.getElementById('nameChapterSetup');
             var CategoryFilmNameHtml='';
             var CategoryFilmListElement = document.getElementById('listChapterFilm__container');
-            var CategoryFilmListHtml='<div class="listChapterFilm__header"><h1>'+film.FilmName+'</h1></div><div class="listChapterFilm__body"><ul class="listChapter">';
+            var CategoryFilmListHtml='<div class="listChapterFilm__header"><h1>'+film.filmName+'</h1></div><div class="listChapterFilm__body"><ul class="listChapter">';
             var CategoryFilmHtml='';
             for(var i = 0;i<CategoryList.length;i++)
             {
@@ -78,13 +81,15 @@ function GetChapterListByChapterID(){
                 
                 if(CategoryList[i].id== parseInt(window.location.pathname.substring(13))){
                     CategoryFilmListHtml+='class="selectedChapter"';
-                    CategoryFilmHtml+=' <video src="'+CategoryList[i].Video+'" autoplay ></video>';
-                    CategoryFilmNameHtml+='<p>Tập'+CategoryList[i].ChapterNumber+' :<span>'+CategoryList[i].ChapterName+'</span></p>';
+                    CategoryFilmHtml+=' <video src="'+CategoryList[i].video+'" autoplay ></video>';
+                    CategoryFilmNameHtml+='<p>Tập'+CategoryList[i].chapterNumber+' :<span>'+CategoryList[i].chapterName+'</span></p>';
                 }
-                CategoryFilmListHtml+='><div class="ChapterDetail__header"><p>'+(i+1)+' <span>'+CategoryList[i].ChapterName+'</span></p></div><div class="ChapterDetail__content"><div class="ChapterDetail__content__img"><a href="/DetailVideo/'+CategoryList[i].id+'"><img src="'+CategoryList[i].ChapterImage+'" alt=""></a></div><div class="ChapterDetail__content__Des"><p>'+CategoryList[i].ChapterDescription+'</p></div></div></li>';
+                CategoryFilmListHtml+='><div class="ChapterDetail__header"><p>'+(i+1)+' <span>'+CategoryList[i].chapterName+'</span></p></div><div class="ChapterDetail__content"><div class="ChapterDetail__content__img"><a href="/DetailVideo/'+CategoryList[i].id+'"><img src="'+CategoryList[i].chapterImage+'" alt=""></a></div><div class="ChapterDetail__content__Des"><p>'+CategoryList[i].chapterDescription+'</p></div></div></li>';
             }
             CategoryFilmListHtml+='</ul></div>';
             CategoryFilmElement.innerHTML = CategoryFilmHtml;
+            console.log(watchedTime);
+            CategoryFilmElement.querySelector('video').currentTime=watchedTime;
             CategoryFilmNameElement.innerHTML=CategoryFilmNameHtml;
             CategoryFilmListElement.innerHTML=CategoryFilmListHtml;
         }
@@ -157,7 +162,7 @@ function ChangeRateHistoryByChapterIDAndUserLogin(){
         }
     }         
     const historydata ={
-        Rate:rating
+        rate:rating
     }
     historydataJson = JSON.stringify(historydata);
     xhttp.open("PATCH", "/ApiV1/HistoryByChapterIDAndUserLogin/"+window.location.pathname.substring(13),false);
@@ -189,7 +194,7 @@ function ChangewatchedTimeHistoryByChapterIDAndUserLogin(){
         }
     }         
     const historydata ={
-        WatchedTime:watchedTime
+        watchedTime:watchedTime
     }
     historydataJson = JSON.stringify(historydata);
     xhttp.open("PATCH", "/ApiV1/HistoryByChapterIDAndUserLogin/"+window.location.pathname.substring(13),false);
