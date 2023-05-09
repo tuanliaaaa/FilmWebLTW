@@ -54,4 +54,5 @@ public class UsersController {
                            @RequestBody UserByAdminDTO userPatchDTO) {
         return userService.updateUser(id, userPatchDTO);
     }
+
 }

@@ -13,6 +13,7 @@ function GetHistoryByChapterIDAndUserLogin(){
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() 
     {
+    console.log(xhttp.status);
         if(xhttp.status==200)
         {
 
@@ -35,7 +36,7 @@ function GetHistoryByChapterIDAndUserLogin(){
                 }
             });
            
-        }else if(xhttp.status=204){
+        }else if(xhttp.status=404){
             PostHistoryByChapterIDAndUserLogin();
         }
         else if(xhttp.status=401)
@@ -117,7 +118,7 @@ function PostHistoryByChapterIDAndUserLogin(){
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() 
     {
-        if(xhttp.status==200)
+        if(xhttp.status==201)
         {
            
         }

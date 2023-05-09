@@ -27,6 +27,6 @@ public class HomeControllers {
         }
         @GetMapping("/Home/UserChangePassword")
         public String UserChangePassword() {
-        return "Home/UserChangePassword";
+        return "Home/ChangePassword";
     }
 }

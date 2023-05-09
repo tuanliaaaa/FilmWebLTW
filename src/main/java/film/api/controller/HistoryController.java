@@ -1,14 +1,15 @@
 package film.api.controller;
 
 import film.api.DTO.ChapterHotDTO;
-import film.api.DTO.ExceptionResponse;
+import film.api.DTO.UserDTO;
+import film.api.exception.ExceptionResponse;
 import film.api.DTO.HistoryDTO;
 import film.api.DTO.HistoryRequestDTO;
 import film.api.configuration.security.JWTUtil;
+import film.api.exception.NotFoundException;
 import film.api.models.Chapter;
 import film.api.models.History;
 import film.api.models.User;
-import film.api.repository.CategoryRepository;
 import film.api.service.ChapterService;
 import film.api.service.HistoryService;
 import film.api.service.UserService;
@@ -27,7 +28,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/ApiV1")
@@ -71,14 +71,17 @@ public class HistoryController {
         String username = jwtUtil.getUsernameFromToken(token);
         Long userID = historyService.getUserID(username);
         History history = historyService.getHistory(chapterId, userID);
-
-        return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.OK);
+        if(history==null){
+           throw  new NotFoundException("User chưa xem Chapter này.");
+        }
+    return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.OK);
     }
     @PostMapping("/HistoryByChapterIDAndUserLogin/{chapterId}")
     public ResponseEntity<?> addHistoryByChapterIDAndUserLogin(HttpServletRequest request, @PathVariable Long chapterId){
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtUtil.getUsernameFromToken(token);
         Long userID = historyService.getUserID(username);
+
         History history =new History   (null,0,chapterService.getChapter(chapterId),userService.findById(userID),0,LocalDateTime.now());
         historyService.saveHistory(history);
         return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.CREATED);
@@ -89,13 +92,14 @@ public class HistoryController {
         String username = jwtUtil.getUsernameFromToken(token);
         User user =userService.findByUsername(username);
         if(user ==null){
-            return new ResponseEntity<>(new ExceptionResponse("User Không Tồn Tại",404), HttpStatus.NOT_FOUND);
+            throw new NotFoundException("User này không tồn tại");
         }
         Chapter chapter=chapterService.findByID(chapterId);
         if(chapter ==null){
-            return new ResponseEntity<>(new ExceptionResponse("Chapter Không Tồn Tại",404), HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Chapter này không tồn tại");
         }
         History history=historyService.updateHistory(user,chapter,historyRequestDTO);
         return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.OK);
     }
+
 }

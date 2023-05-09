@@ -11,6 +11,7 @@ import film.api.repository.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -48,9 +49,14 @@ public class HistoryService {
 
     public History getHistory(Long idChapter,Long userID){
 
-//        Long userid = historyRepository.useridByUserName(username);
-        History history = historyRepository.historyByUserIDAndChapterID(userID,idChapter);
-        return history;
+        try{
+            History history = historyRepository.historyByUserIDAndChapterID(userID,idChapter);
+            return history;
+        }
+        catch (NoResultException ex){
+            return null;
+        }
+
     }
     public Long getUserID(String username){
         Long userid = historyRepository.useridByUserName(username);

@@ -1,7 +1,12 @@
 package film.api.configuration.security.controller;
 
-import film.api.configuration.security.JWTUtil;
-import film.api.configuration.security.JwtUser;
+import film.api.DTO.UserDTO;
+import film.api.DTO.UserSignupDTO;
+import film.api.configuration.security.*;
+import film.api.models.User;
+import film.api.service.ChapterService;
+import film.api.service.HistoryService;
+import film.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +43,15 @@ public class UserController {
     @Autowired
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
+    @Autowired
 
+    private JwtUserDetailsService userDetailsServicea;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    private ChapterService chapterService;
+    @Autowired
+    private UserService userService;
     @RequestMapping(value = "user", method = RequestMethod.GET)
 
     @Secured("ROLE_ADMIN")
@@ -45,30 +60,31 @@ public class UserController {
         String username = jwtUtil.getUsernameFromToken(token);
         return (JwtUser) userDetailsService.loadUserByUsername(username);
     }
-    @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
-        try {
-            String rootDir = System.getProperty("user.dir");
-            // Đường dẫn tương đối đến thư mục "images"
-            String relativePath = "/src/main/resources/static/images/";
-            // Lưu file vào thư mục image
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            Path path = Paths.get(rootDir+relativePath + fileName);
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
-            // Lưu đường dẫn của file vào CSDL
-            String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/image/")
-                    .path(fileName)
-                    .toUriString();
-//            Image image = new Image();
-//            image.setUrl(fileUrl);
-//            imageRepository.save(image);
-
-            return ResponseEntity.ok().body(fileUrl);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
-        }
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(@RequestBody UserSignupDTO user) throws Exception {
+        return new ResponseEntity<>(userDetailsServicea.save(user),HttpStatus.CREATED);
     }
+    @GetMapping("/ApiV1/UserByLogin")
+    public ResponseEntity<?> getUserByIdLogin(HttpServletRequest request){
+        String token = request.getHeader(tokenHeader).substring(7);
+        String username = jwtUtil.getUsernameFromToken(token);
+        Long userID = historyService.getUserID(username);
+        User user = userService.findById(userID);
+        UserDTO userDTO = new UserDTO(user);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+    @PatchMapping("/ApiV1/UserByLogin")
+    public ResponseEntity<?> changeFullName(HttpServletRequest request,@RequestBody UserDTO userDTO){
+        String token = request.getHeader(tokenHeader).substring(7);
+        String username = jwtUtil.getUsernameFromToken(token);
+        Long userID = historyService.getUserID(username);
+        User user = userService.findById(userID);
+        user.setFullname(userDTO.getFullName());
+        User userUpdate = userService.updateUser(user);
+        UserDTO userUpdateDTO = new UserDTO(userUpdate);
+        return new ResponseEntity<>(userUpdateDTO, HttpStatus.OK);
+    }
+
 
 }
