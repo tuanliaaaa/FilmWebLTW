@@ -12,4 +12,6 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
 
     @Query("SELECT f FROM Film f where f.FilmName LIKE %:filmName%")
     List<Film> findUsersByFilmNameContain(@Param("filmName") String filmName);
+    @Query("SELECT f from Film f join Chapter c on c.Film.Id = f.Id where c.Id = :id")
+    Film filmByIdChapter(@Param("id") Long id);
 }

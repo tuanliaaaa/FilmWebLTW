@@ -156,12 +156,21 @@
             actorListParent.forEach(function(actorParent,index){
                 ListActor.push(actorParent.getAttribute("value"));
             })
-            formData.append('ListActor',ListActor);
-            formData.append('ChapterName',document.getElementById('ChapterName').value);
-            formData.append('ChapterDescription',document.getElementById('ChapterDescription').value);
-            formData.append('ChapterImage', document.getElementById('ChapterImage').files[0]);
-            formData.append('TrailerChapter', document.getElementById('TrainnerChapter').files[0]);
-            formData.append('Video', document.getElementById('Video').files[0]);
+            formData.append('listActor',ListActor);
+            formData.append('chapterName',document.getElementById('ChapterName').value);
+            formData.append('chapterDescription',document.getElementById('ChapterDescription').value);
+             if(document.getElementById('ChapterImage').files[0]!=null){
+                formData.append('chapterImage', document.getElementById('ChapterImage').files[0]);
+            }
+            if(document.getElementById('TrainnerChapter').files[0]!=null){
+                formData.append('trailerChapter', document.getElementById('TrainnerChapter').files[0]);
+            }
+            if(document.getElementById('Video').files[0]!=null){
+                   formData.append('video', document.getElementById('Video').files[0]);
+            }
+
+
+
 
 
             xhr.progress= function(event) {
@@ -209,7 +218,7 @@
                     var selectActorHtml='<option value="0"></option>';
                     for(var i=0;i<Response.length;i++)
                     {
-                        selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].ActorName+'</option>'
+                        selectActorHtml+='<option value="'+Response[i].id+'">'+Response[i].actorName+'</option>'
                     }
                     selectActorElement.innerHTML=selectActorHtml;
                 }else if(xhttp.status==204){
@@ -227,7 +236,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllgetActor",false);
+            xhttp.open("GET", "/ApiV1/AllActor",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");

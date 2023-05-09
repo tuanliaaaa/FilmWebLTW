@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -34,5 +35,5 @@ public class History {
     private int Rate;
 
     @NotNull
-    private Date HistoryView;
+    private LocalDateTime HistoryView;
 }

@@ -278,18 +278,7 @@ public class FilmService {
     public List<Film> findAll() {
         return filmRepository.findAll();
     }
-//    public Film updateFilm(Long id, UserByAdminDTO userPatchDTO) {
-//        Object s=userRepository.findById(id);
-//        User user = userRepository.findById(id).orElse(null);
-//
-//        if(userPatchDTO.getFullname() != null) {
-//            user.setFullname(userPatchDTO.getFullname());
-//        }
-//
-//        if(userPatchDTO.getUsername() != null) {
-//            user.setUsername(userPatchDTO.getUsername());
-//        }
-//
-//        return userRepository.save(user);
-//    }
+    public Film filmByIdChapter(Long chapterId){
+        return filmRepository.filmByIdChapter(chapterId);
+    }
 }
