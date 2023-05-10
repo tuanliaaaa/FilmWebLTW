@@ -281,4 +281,11 @@ public class FilmService {
     public Film filmByIdChapter(Long chapterId){
         return filmRepository.filmByIdChapter(chapterId);
     }
+
+    public List<Film> filmByCategoryId(Long categoryId){
+        return filmRepository.categoryAllFim(categoryId);
+    }
+    public List<Film> searchFilm(String key) {
+        return filmRepository.searchFilm(key);
+    }
 }

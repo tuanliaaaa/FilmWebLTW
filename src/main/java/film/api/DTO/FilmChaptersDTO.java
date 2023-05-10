@@ -14,8 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class FilmChaptersDTO {
-    @Autowired
-    private ChapterService chapterService;
+
     private Long Id;
 
 

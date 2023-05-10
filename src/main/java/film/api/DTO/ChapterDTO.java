@@ -45,7 +45,7 @@ public class ChapterDTO {
 
         private String ChapterStatus;
 
-        public void ChapterDTO(Chapter chapter)
+        public  ChapterDTO(Chapter chapter)
         {
             this.Id=chapter.getId();
             this.ChapterCreateDay=chapter.getChapterCreateDay();

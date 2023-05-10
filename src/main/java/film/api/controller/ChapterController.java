@@ -46,4 +46,11 @@ public class ChapterController {
         Chapter chapter =chapterService.updateChapter(chapterID,chapterPatch);
         return new ResponseEntity<>(chapter, HttpStatus.OK);
     }
+    @GetMapping("/ChapterHot")
+    public ResponseEntity<?> chapterHot(){
+
+        List<Chapter> newChapterList = chapterService.newestChapters();
+
+        return new ResponseEntity<>(newChapterList, HttpStatus.OK);
+    }
 }
