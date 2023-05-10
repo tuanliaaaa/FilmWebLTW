@@ -20,5 +20,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     List<Chapter> findAllByIdNotIn(@Param("chapterIDList") List<Long> chapterIDList);
     @Query("SELECT c FROM Chapter c ORDER BY c.ChapterCreateDay DESC")
     List<Chapter> Newest();
+    @Query("SELECT c.ChapterNumber FROM Chapter c WHERE c.Id = (  SELECT MAX(c.ChapterNumber)  FROM c  where c.Film.Id= :idFilm )")
+    Integer chapternumberbyIdFilmInt(@Param("idFilm") Long idFilm);
 
 }

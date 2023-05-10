@@ -50,8 +50,8 @@ public class ChapterService {
     public String saveFile(MultipartFile file, String typeFile){
         //Lưu Image về server
         String rootDir = System.getProperty("user.dir");
-        // Đường dẫn tương đối đến thư mục "images"
-        String relativePath = "/src/main/resources/static/"+typeFile+"/";
+        // Đường dẫn tương đối đến thư mục
+        String relativePath = "/src/main/resources/Media/"+typeFile+"/";
 
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -65,7 +65,7 @@ public class ChapterService {
 
         // Lưu đường dẫn của file vào CSDL
         String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/"+typeFile+"/")
+                .path("/get-file/")
                 .path(fileNameNew)
                 .toUriString();
         return  fileUrl;
@@ -114,9 +114,15 @@ public class ChapterService {
             status="Đã Ra";
 
         }
-        String trailerChapter = saveFile(chapterPost.getTrailerChapter(),"videos");
-        String imageChapter = saveFile(chapterPost.getChapterImage(),"images");
-        Chapter chapter =new Chapter(null,chapterPost.getChapterName(),1,video,film,chapterPost.getChapterDescription(),trailerChapter,imageChapter, LocalDateTime.now(),null,status);
+        String trailerChapter = saveFile(chapterPost.getTrailerChapter(),"Videos");
+        String imageChapter = saveFile(chapterPost.getChapterImage(),"Images");
+        Integer chapterNumber = chapterRepository.chapternumberbyIdFilmInt(filmID);
+        if(chapterNumber==null) {
+            chapterNumber = 1;
+        }else {
+            chapterNumber+=1;
+        }
+        Chapter chapter =new Chapter(null,chapterPost.getChapterName(),chapterNumber,video,film,chapterPost.getChapterDescription(),trailerChapter,imageChapter, LocalDateTime.now(),null,status);
         if(chapterPost.getVideo()!=null){
             chapter.setChapterPremieredDay(LocalDateTime.now());
         }
@@ -162,16 +168,16 @@ public class ChapterService {
         }
 
         if (chapterPatch.getChapterImage() != null) {
-            String image = saveFile(chapterPatch.getChapterImage(),"images");
+            String image = saveFile(chapterPatch.getChapterImage(),"Images");
 
             chapter.setChapterImage(image);
         }
         if (chapterPatch.getTrailerChapter() != null) {
-            String trailer = saveFile(chapterPatch.getChapterImage(),"videos");
+            String trailer = saveFile(chapterPatch.getChapterImage(),"Videos");
             chapter.setTrailerChapter(trailer);
         }
         if (chapterPatch.getVideo() != null) {
-            String video = saveFile(chapterPatch.getVideo(),"videos");
+            String video = saveFile(chapterPatch.getVideo(),"Videos");
             chapter.setChapterStatus("Đã Ra");
             chapter.setVideo(video);
         }
