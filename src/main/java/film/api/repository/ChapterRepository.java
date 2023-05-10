@@ -16,5 +16,9 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
     @Query("SELECT c FROM Chapter c WHERE c.Id = :id")
     Chapter ChapterByIdChapter(@Param("id") Long id);
+    @Query("SELECT c FROM Chapter c WHERE c.id NOT IN (:chapterIDList)")
+    List<Chapter> findAllByIdNotIn(@Param("chapterIDList") List<Long> chapterIDList);
+    @Query("SELECT c FROM Chapter c ORDER BY c.ChapterCreateDay DESC")
+    List<Chapter> Newest();
 
 }

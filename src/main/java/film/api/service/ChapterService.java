@@ -177,4 +177,10 @@ public class ChapterService {
         }
         return chapter;
     }
+    public List<Chapter> findAllByNotInId(List<Long> chapterIDList){
+        return chapterRepository.findAllByIdNotIn(chapterIDList);
+    }
+    public List<Chapter> newestChapters(){
+        return chapterRepository.Newest();
+    }
 }

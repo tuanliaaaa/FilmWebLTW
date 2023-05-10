@@ -1,6 +1,7 @@
 package film.api.controller;
 
 import film.api.DTO.*;
+import film.api.models.Category;
 import film.api.models.Chapter;
 import film.api.models.Film;
 import film.api.models.User;
@@ -78,11 +79,42 @@ public class FilmController {
         List<Chapter> chapterList = chapterService.chapterByChapterId(chapterId);
         List<ChapterDTO> chapterDTOList = new ArrayList<>();
         for (Chapter chapter : chapterList) {
-            ChapterDTO dto = new ChapterDTO();
-            dto.ChapterDTO(chapter);
-            chapterDTOList.add(dto);
+
+            chapterDTOList.add(new ChapterDTO(chapter));
         }
         filmChaptersDTO.setChapters(chapterDTOList);
         return new ResponseEntity<>(filmChaptersDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("CategoryAllFim")
+    public ResponseEntity<?> GetCategoryFilmList(){
+        List<CategoryFilmChapterDTO> list = new ArrayList<>();
+        List<Category> categories = categoryService.findAll();
+        for (Category category : categories){
+            CategoryFilmChapterDTO cfc = new CategoryFilmChapterDTO();
+            cfc.loadData(category,chapterService,filmService,categoryService);
+            list.add(cfc);
+
+        }
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+    @GetMapping("/FindFilm/{key}")
+    public ResponseEntity<?> searchFilm(@PathVariable("key") String key) {
+        List<Film> films = filmService.searchFilm(key);
+
+        List<FilmChaptersDTO> chaptersDTOS =new ArrayList<>();
+        for (Film film : films) {
+            FilmChaptersDTO filmChaptersDTO = new FilmChaptersDTO(film);
+            List<Chapter> chapterList = chapterService.getChapterByFilmID(film.getId());
+            List<ChapterDTO> chapterDTOList = new ArrayList<>();
+            for (Chapter chapter : chapterList) {
+
+                chapterDTOList.add(new ChapterDTO(chapter));
+            }
+            filmChaptersDTO.setChapters(chapterDTOList);
+            chaptersDTOS.add(filmChaptersDTO);
+        }
+
+        return new ResponseEntity(chaptersDTOS, HttpStatus.OK);
     }
 }

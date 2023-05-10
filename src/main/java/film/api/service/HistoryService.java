@@ -79,5 +79,23 @@ public class HistoryService {
         }
         return historyRepository.save(history);
     }
+    public List<History> getListhistory(Long id){
+        return historyRepository.historyByIdUser(id);
+    }
+    public List<Chapter> findChaptersByUserId(Long filmID){
+        return historyRepository.findChaptersByUserId(filmID);
+    }
+    public List<Chapter> getChaptersHot(LocalDateTime fromDay, LocalDateTime toDay) {
+        List<Object[]> results = historyRepository.getChaptersHotCount(fromDay, toDay);
+        List<Chapter> chapterHots = new ArrayList<>();
+        for (Object[] result : results) {
+            ChapterHotDTO chapterHotDTO = new ChapterHotDTO();
+            BigInteger bigInt = (BigInteger) result[0];
+            Long chapterID = bigInt.longValue();
+            Chapter chapter=chapterRepository.findById(chapterID).orElse(null);
+            if(chapter!=null)chapterHots.add(chapter);
 
+        }
+        return chapterHots;
+    }
 }

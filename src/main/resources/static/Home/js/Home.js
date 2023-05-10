@@ -35,7 +35,7 @@ function GetChapterRecommend(){
             var RecommendChapterHtml=' <span class="prev"><i class="fa-solid fa-angle-left"></i></span>';
             for(var i = 0;i<RecommendChapter.length;i++)
             {
-                RecommendChapterHtml+=' <div class="VideoList__Videos"><a href="/DetailVideo/'+RecommendChapter[i].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+RecommendChapter[i].ChapterImage+'" alt=""></div><div class="video__content__video"><video src="'+RecommendChapter[i].TrailerChapter+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+RecommendChapter[i].ChapterName+'</p></div></div></div></div></a></div>';
+                RecommendChapterHtml+=' <div class="VideoList__Videos"><a href="/DetailVideo/'+RecommendChapter[i].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+RecommendChapter[i].chapterImage+'" alt=""></div><div class="video__content__video"><video src="'+RecommendChapter[i].trailerChapter+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+RecommendChapter[i].chapterName+'</p></div></div></div></div></a></div>';
             }
             RecommendChapterHtml+=' <span class="next"><i class="fa-solid fa-angle-right"></i></span>';
             RecommendChapterElement.innerHTML=RecommendChapterHtml;
@@ -63,13 +63,13 @@ function GetHistoryUserLogin(){
         if(xhttp.status==200)
         {
             
-            ChapterHot.chapters.forEach(
+            ChapterHot.forEach(
                 (currentValue, index) =>{
                     historyUserLogin.push(currentValue.id);
                   }
             );
             
-           
+           console.log(historyUserLogin);
             
         }
         else if(xhttp.status==401)
@@ -112,19 +112,19 @@ function GetCategoryFilmList(){
                    
                     var countFilm=0;
                     demCategory++;
-                    CategoryFilmDetailHtml='<div class="ToiecList__ToiecVideos"><div class="ToiecVideos__ToiecName"><h1>'+CategoryFilm[i].CategoryName+'</h1></div><div class="ToeicVideos__VideoList"><span class="prev"><i class="fa-solid fa-angle-left"></i></span> ';
+                    CategoryFilmDetailHtml='<div class="ToiecList__ToiecVideos"><div class="ToiecVideos__ToiecName"><h1>'+CategoryFilm[i].categoryName+'</h1></div><div class="ToeicVideos__VideoList"><span class="prev"><i class="fa-solid fa-angle-left"></i></span> ';
                     for(var j=0;j<CategoryFilm[i].films.length;j++)
                     {
                         
                         try{
                             
-                            if(CategoryFilm[i].films[j].chapters[0].ChapterStatus=='Đã ra')
+                            if(CategoryFilm[i].films[j].chapters[0].chapterStatus=='Đã Ra')
                             {
                                 
                                 var lastHistory='';
                                 
                                 try{
-                                    lastHistory ='<div class="VideoList__Videos"><a href="/DetailVideo/'+CategoryFilm[i].films[j].chapters[0].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+CategoryFilm[i].films[j].chapters[0].ChapterImage+'" alt=""></div><div class="video__content__video"><video src="'+CategoryFilm[i].films[j].chapters[0].Video+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+CategoryFilm[i].films[j].chapters[0].ChapterName+'</p><p>Thể loại: <span>'+CategoryFilm[i].CategoryName+'</span></p></div></div></div></div></a></div>';
+                                    lastHistory ='<div class="VideoList__Videos"><a href="/DetailVideo/'+CategoryFilm[i].films[j].chapters[0].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+CategoryFilm[i].films[j].chapters[0].chapterImage+'" alt=""></div><div class="video__content__video"><video src="'+CategoryFilm[i].films[j].chapters[0].video+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+CategoryFilm[i].films[j].chapters[0].chapterName+'</p><p>Thể loại: <span>'+CategoryFilm[i].categoryName+'</span></p></div></div></div></div></a></div>';
                                    
                                 }
                                 catch{
@@ -135,13 +135,13 @@ function GetCategoryFilmList(){
                                 
                                 for(var k=0;k<CategoryFilm[i].films[j].chapters.length;k++)
                                 {
-                                      if(CategoryFilm[i].films[j].chapters[k].ChapterStatus=='Đã ra')
+                                      if(CategoryFilm[i].films[j].chapters[k].chapterStatus=='Đã Ra')
                                     {
                                         
                                         if(historyUserLogin.includes(CategoryFilm[i].films[j].chapters[k].id))
                                         {
                                             
-                                            lastHistory ='<div class="VideoList__Videos"><a href="/DetailVideo/'+CategoryFilm[i].films[j].chapters[k].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+CategoryFilm[i].films[j].chapters[k].ChapterImage+'" alt=""></div><div class="video__content__video"><video src="'+CategoryFilm[i].films[j].chapters[k].Video+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+CategoryFilm[i].films[j].chapters[k].ChapterName+'</p><p>Thể loại: <span>'+CategoryFilm[i].CategoryName+'</span></p></div></div></div></div></a></div>';
+                                            lastHistory ='<div class="VideoList__Videos"><a href="/DetailVideo/'+CategoryFilm[i].films[j].chapters[k].id+'" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+CategoryFilm[i].films[j].chapters[k].chapterImage+'" alt=""></div><div class="video__content__video"><video src="'+CategoryFilm[i].films[j].chapters[k].video+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+CategoryFilm[i].films[j].chapters[k].chapterName+'</p><p>Thể loại: <span>'+CategoryFilm[i].categoryName+'</span></p></div></div></div></div></a></div>';
                                         
                                         }
                                     }
@@ -196,14 +196,14 @@ function GetHotChapter(){
     xhttp.onload = function() 
     {
         var ChapterHotJson=xhttp.responseText
-        var ChapterHot= JSON.parse(ChapterHotJson)
+        var ChapterHot= JSON.parse(ChapterHotJson)[0]
         if(xhttp.status==200)
         {
             
            
             var ChapterHotElement = document.getElementById('ChapterHot');
             var ChapterHotHtml='';
-            ChapterHotHtml+='<div class="movieHots__movie__content" id="movie__hotFirst"><div class="movie__content__img"><img src="'+ChapterHot.ChapterImage +'" alt=""></div><div class="movie__content__video"><video src="'+ChapterHot.TrailerChapter+'" autoplay="true" muted="true"></video></div></div><div class="movieHots__movie__body"><div class="movie__body__aboutMovie"><div class="aboutMovie__imgName"><img src="'+ChapterHot.Film.BannerFilmName+'" alt=""></div><div class="aboutMovie__des"><h1>Xem ngay mùa 2</h1><p>'+ChapterHot.ChapterDescription+'</p></div><div class="aboutMovie__action"><a href="/DetailVideo/'+ChapterHot.id+'" class="aboutMovie__action__play"><button><i class="fa-solid fa-play"></i> Play</button></a><button class="aboutMovie__action__infor"><i class="fa-solid fa-circle-info"></i> Thông tin khác</button></div></div></div>';
+            ChapterHotHtml+='<div class="movieHots__movie__content" id="movie__hotFirst"><div class="movie__content__img"><img src="'+ChapterHot.chapterImage +'" alt=""></div><div class="movie__content__video"><video src="'+ChapterHot.trailerChapter+'" autoplay="true" muted="true"></video></div></div><div class="movieHots__movie__body"><div class="movie__body__aboutMovie"><div class="aboutMovie__imgName"><img src="'+ChapterHot.film.bannerFilmName+'" alt=""></div><div class="aboutMovie__des"><h1>Xem ngay mùa 2</h1><p>'+ChapterHot.chapterDescription+'</p></div><div class="aboutMovie__action"><a href="/DetailVideo/'+ChapterHot.id+'" class="aboutMovie__action__play"><button><i class="fa-solid fa-play"></i> Play</button></a><button class="aboutMovie__action__infor"><i class="fa-solid fa-circle-info"></i> Thông tin khác</button></div></div></div>';
             ChapterHotElement.innerHTML = ChapterHotHtml;
             
         }
@@ -237,7 +237,7 @@ function Search(){
                 ChapterHotHtml+='<div class="ToiecVideos__ToiecName"><h1>SearchFilm</h1></div><div class="ToeicVideos__VideoList"><span class="prev"><i class="fa-solid fa-angle-left"></i></span>'
                 for (var i=0;i<listFilm.length;i++){
 
-                    ChapterHotHtml+='<div class="VideoList__Videos"><a href="" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+listFilm[i].chapters[0].ChapterImage+'" alt=""></div><div class="video__content__video"><video src="'+listFilm[i].chapters[0].TrailerChapter+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+listFilm[i].chapters[0].ChapterName+'</p><p>Thể loại: <span>'+listFilm[i].chapters[0].ChapterDescription+'</span></p></div></div></div></div></a></div>';
+                    ChapterHotHtml+='<div class="VideoList__Videos"><a href="" class="Videos__video"><div class="Videos__video__content"><div class="video__content__img"><img src="'+listFilm[i].chapters[0].chapterImage+'" alt=""></div><div class="video__content__video"><video src="'+listFilm[i].chapters[0].trailerChapter+'" autoplay muted="true"></video></div><div class="video__content__des"><div class="content__des__body"><div class="des__body__listIcon"><div class="listIcon__icon"><i class="fa-solid fa-play"></i></div></div><div class="des__body__title"><p>'+listFilm[i].chapters[0].chapterName+'</p><p>Thể loại: <span>'+listFilm[i].chapters[0].chapterDescription+'</span></p></div></div></div></div></a></div>';
                 }
                 ChapterHotHtml+='<span class="next"><i class="fa-solid fa-angle-right"></i></span></div>';
                 ChapterHotElement.innerHTML = ChapterHotHtml;

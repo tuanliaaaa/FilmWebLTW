@@ -1,6 +1,8 @@
 package film.api.repository;
 
 import film.api.DTO.ChapterHotDTO;
+import film.api.models.Actor;
+import film.api.models.Chapter;
 import film.api.models.History;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +27,10 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 
     @Query("SELECT user.Id from User user WHERE user.username = :key")
     Long useridByUserName(@Param("key") String key);
+    @Query("SELECT h FROM History h WHERE h.User.Id = :id")
+    List<History> historyByIdUser(@Param("id") Long id);
+    @Query("SELECT h.Chapter FROM History h WHERE h.User.id = :userID")
+    List<Chapter> findChaptersByUserId(@Param("userID") Long userID);
+
+
 }
