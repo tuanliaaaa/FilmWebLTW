@@ -49,7 +49,7 @@ public class FilmService {
         //Lưu Image về server
         String rootDir = System.getProperty("user.dir");
         // Đường dẫn tương đối đến thư mục
-        String relativePath = "/src/main/resources/Media/"+typeFile+"/";
+        String relativePath = "./Media/"+typeFile+"/";
 
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
