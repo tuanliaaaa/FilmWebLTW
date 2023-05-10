@@ -1,6 +1,7 @@
 package film.api.service;
 
 import film.api.DTO.FilmRequestDTO;
+import film.api.helper.FileSystemHelper;
 import film.api.models.*;
 import film.api.repository.*;
 import org.apache.commons.io.FilenameUtils;
@@ -49,12 +50,14 @@ public class FilmService {
         //Lưu Image về server
         String rootDir = System.getProperty("user.dir");
         // Đường dẫn tương đối đến thư mục
-        String relativePath = "./Media/"+typeFile+"/";
+        String relativePath = "/Media/"+typeFile+"/";
 
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileNameNew =getUniqueFileName(fileName,StringUtils.cleanPath(rootDir+relativePath));
-        Path path = Paths.get(StringUtils.cleanPath(rootDir+relativePath)+fileNameNew);
+        String fileNameNew =getUniqueFileName(fileName, FileSystemHelper.STATIC_FILES_DIR);
+
+        Path path = Paths.get(FileSystemHelper.STATIC_FILES_DIR, fileNameNew);
+        System.out.println("saved file path: "+ path.toString());
         try {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

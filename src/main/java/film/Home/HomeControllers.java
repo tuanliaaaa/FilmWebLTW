@@ -1,6 +1,7 @@
 package film.Home;
 
 
+import film.api.helper.FileSystemHelper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,8 +64,8 @@ public class HomeControllers {
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
     public @ResponseBody byte[] getFile(@PathVariable String fileName) throws IOException {
-        String rootDir = System.getProperty("user.dir");
-        File f = new File(rootDir + "./Media/Images/" + fileName);
+        Path path = Paths.get(FileSystemHelper.STATIC_FILES_DIR, fileName);
+        File f = new File(path.toString());
         InputStream in = new FileInputStream(f);
         return IOUtils.toByteArray(in);
     }
