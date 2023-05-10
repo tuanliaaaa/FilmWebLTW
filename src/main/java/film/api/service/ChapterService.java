@@ -1,6 +1,7 @@
 package film.api.service;
 
 import film.api.DTO.ChapterRequestDTO;
+import film.api.helper.FileSystemHelper;
 import film.api.models.Actor;
 import film.api.models.ActorChapter;
 import film.api.models.Chapter;
@@ -38,25 +39,22 @@ public class ChapterService {
     public String getUniqueFileName(String fileName, String uploadDir) {
         String newFileName = fileName;
         int index = 1;
-        File uploadedFile = new File(uploadDir + newFileName);
+        File uploadedFile = new File(uploadDir +"/"+ newFileName);
         while (uploadedFile.exists()) {
             newFileName = fileName.replaceFirst("[.][^.]+$", "") + "(" + index + ")" + "." +
                     FilenameUtils.getExtension(fileName);
-            uploadedFile = new File(uploadDir + newFileName);
+            uploadedFile = new File(uploadDir +"/"+ newFileName);
             index++;
         }
         return newFileName;
     }
     public String saveFile(MultipartFile file, String typeFile){
-        //Lưu Image về server
-        String rootDir = System.getProperty("user.dir");
-        // Đường dẫn tương đối đến thư mục
-        String relativePath = "/src/main/resources/Media/"+typeFile+"/";
-
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileNameNew =getUniqueFileName(fileName,StringUtils.cleanPath(rootDir+relativePath));
-        Path path = Paths.get(StringUtils.cleanPath(rootDir+relativePath)+fileNameNew);
+        String fileNameNew =getUniqueFileName(fileName, FileSystemHelper.STATIC_FILES_DIR);
+
+        Path path = Paths.get(FileSystemHelper.STATIC_FILES_DIR, fileNameNew);
+        System.out.println("saved file path: "+ path.toString());
         try {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

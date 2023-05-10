@@ -37,20 +37,17 @@ public class FilmService {
     public String getUniqueFileName(String fileName, String uploadDir) {
         String newFileName = fileName;
         int index = 1;
-        File uploadedFile = new File(uploadDir + newFileName);
+        File uploadedFile = new File(uploadDir +"/"+ newFileName);
         while (uploadedFile.exists()) {
             newFileName = fileName.replaceFirst("[.][^.]+$", "") + "(" + index + ")" + "." +
                     FilenameUtils.getExtension(fileName);
-            uploadedFile = new File(uploadDir + newFileName);
+            uploadedFile = new File(uploadDir + "/"+newFileName);
             index++;
         }
         return newFileName;
     }
     public String saveFile(MultipartFile file,String typeFile){
-        //Lưu Image về server
-        String rootDir = System.getProperty("user.dir");
-        // Đường dẫn tương đối đến thư mục
-        String relativePath = "/Media/"+typeFile+"/";
+
 
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -238,7 +235,7 @@ public class FilmService {
             film.setTrailerFilm(trailer);
             chapter.setTrailerChapter(trailer);
         }
-        if(filmPatch.getFilmBollen()==1)
+        if(filmPatch.getFilmBollen()==1 && film.getFilmBollen()!=1)
         {
             if(filmPatch.getChapterName()==null) throw new IllegalArgumentException("Vui Lòng nhập tên Chapter 1");
             if(filmPatch.getChapterDescription()==null) throw new IllegalArgumentException("Vui Lòng nhập mô tả Chapter 1");
