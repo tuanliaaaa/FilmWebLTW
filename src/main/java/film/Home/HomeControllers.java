@@ -62,8 +62,8 @@ public class HomeControllers {
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
     public @ResponseBody byte[] getFile(@PathVariable String fileName) throws IOException {
-
-        File f = new File("./Media/Images/" + fileName);
+        String rootDir = System.getProperty("user.dir");
+        File f = new File(rootDir + "./Media/Images/" + fileName);
         InputStream in = new FileInputStream(f);
         return IOUtils.toByteArray(in);
     }
