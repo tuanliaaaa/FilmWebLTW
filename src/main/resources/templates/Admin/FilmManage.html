@@ -107,10 +107,47 @@
     <div id="footer">
         
     </div>
-    <script> 
+    <script>
+       function CheckAdmin(){
+             const xhttp = new XMLHttpRequest();
+                xhttp.onload = function()
+                {
+                    if(xhttp.status==200)
+                    {
+                        var ResponseJson=xhttp.responseText
+                        var Response= JSON.parse(ResponseJson)
+                        if(Response.authorities[0].authority!="ROLE_ADMIN"){
+                         localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                        }
+                    }else if(xhttp.status==204){
+
+                    }
+                    else if(xhttp.status==401)
+                    {
+                        localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                    }
+                    else if(xhttp.status==403)
+                    {
+                        localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                    }
+                }
+
+                xhttp.open("GET", "/user",false);
+
+                xhttp.setRequestHeader("Content-type","application/json")
+                token = localStorage.getItem("Token");
+                authorization ='Bearer '+token
+                xhttp.setRequestHeader("Authorization",authorization);
+                xhttp.send();
+
+        }
         
-        var indexPage=1;
-        if(localStorage.getItem("Token")){  
+
+        if(localStorage.getItem("Token")){
+        CheckAdmin();
             GetAllFilm();
             
         }
@@ -141,7 +178,7 @@
                         var indexPageElement = document.getElementById('indexPage');
                         var indexPageHtml='';
 
-                        indexPageHtml +='<div class="indexPage___now"><p>'+indexPage+'</p></div>';
+                        indexPageHtml +='<div class="indexPage___now"><p>'+1+'</p></div>';
 
                         
                         var tableFilmHtml ='<thead><tr><th>Image</th><th>FilmName</th><th>Description</th><th>Action</th></tr></thead><tbody>';
@@ -169,7 +206,7 @@
                     }
                 }         
                 //khai báo phương thức và đường dẫn để request
-                xhttp.open("GET", "/ApiV1/FilmByName/"+Filmname+"?page="+indexPage,false);
+                xhttp.open("GET", "/ApiV1/FilmByName/"+Filmname,false);
                 //định dạng gửi đi787
                 xhttp.setRequestHeader("Content-type","application/json")
                 token = localStorage.getItem("Token");
@@ -192,7 +229,7 @@
                     var indexPageElement = document.getElementById('indexPage');
                     var indexPageHtml='';
 
-                    indexPageHtml +='<div class="indexPage___now"><p>'+indexPage+'</p></div>';
+                    indexPageHtml +='<div class="indexPage___now"><p>'+1+'</p></div>';
 
                     
                     var tableFilmHtml ='<thead><tr><th>Image</th><th>FilmName</th><th>Description</th><th>Action</th></tr></thead><tbody>';

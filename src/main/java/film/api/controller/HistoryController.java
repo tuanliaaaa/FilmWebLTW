@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class HistoryController {
     private UserService userService;
     @Autowired
     private ActorService actorService;
+    @Secured({"ROLE_ADMIN"})
     @GetMapping("/ChapterHotFromDaytoDay")
     public ResponseEntity<?> getChapterHotFromDayToDay(
             @RequestParam(value = "fromDay", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDay,
@@ -64,6 +66,7 @@ public class HistoryController {
 
         return ResponseEntity.ok(historyService.getChaptersHotCount(fromDay.atStartOfDay(),toDay.atStartOfDay()));
     }
+    @Secured({"ROLE_ADMIN","ROlE_USER"})
     @GetMapping("/HistoryByChapterIDAndUserLogin/{chapterId}")
     public ResponseEntity<?> getHistoryByChapterIDAndUserLogin(HttpServletRequest request, @PathVariable Long chapterId) {
         String token = request.getHeader(tokenHeader).substring(7);
@@ -75,6 +78,7 @@ public class HistoryController {
         }
     return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @PostMapping("/HistoryByChapterIDAndUserLogin/{chapterId}")
     public ResponseEntity<?> addHistoryByChapterIDAndUserLogin(HttpServletRequest request, @PathVariable Long chapterId){
         String token = request.getHeader(tokenHeader).substring(7);
@@ -85,6 +89,7 @@ public class HistoryController {
         historyService.saveHistory(history);
         return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.CREATED);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @PatchMapping("/HistoryByChapterIDAndUserLogin/{chapterId}")
     public ResponseEntity<?> updateHistoryByChapterIDAndUserLogin(HttpServletRequest request, @PathVariable Long chapterId, @RequestBody HistoryRequestDTO historyRequestDTO){
         String token = request.getHeader(tokenHeader).substring(7);
@@ -100,6 +105,7 @@ public class HistoryController {
         History history=historyService.updateHistory(user,chapter,historyRequestDTO);
         return new ResponseEntity<>(new HistoryDTO(history), HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("/HistoryUserLogin")
     public ResponseEntity<?> getListHistory(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
@@ -113,6 +119,7 @@ public class HistoryController {
         }
         return new ResponseEntity<>(chapterDTOS, HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("Recommend")
     public ResponseEntity<?> getRecommend(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
@@ -125,7 +132,7 @@ public class HistoryController {
         if (history.isEmpty()) {
             LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
             List<Chapter> chapterHotCounts = historyService.getChaptersHot(oneWeekAgo, LocalDateTime.now());
-//            return new ResponseEntity<>(chapterHotCounts,HttpStatus.OK);
+            return new ResponseEntity<>(chapterHotCounts,HttpStatus.OK);
         }
 
         //------------Content Based System-------------------

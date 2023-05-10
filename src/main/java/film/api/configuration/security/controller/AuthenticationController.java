@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,7 +46,7 @@ public class AuthenticationController {
         final String token = jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
-
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PatchMapping("/ApiV1/ChangePassword")
 
     public ResponseEntity<?> ChangePassword(HttpServletRequest request,@RequestBody UserChangePassword userChangePassword) {

@@ -12,6 +12,7 @@ import film.api.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class FilmController {
     private ChapterService chapterService;
     @Autowired
     private CategoryService categoryService;
-
+    @Secured({"ROLE_ADMIN","USER_ADMIN"})
     @GetMapping("/AllFilm")
     public ResponseEntity<?> getFilmList(){
         List<Film> films=filmService.findAll();
@@ -39,6 +40,7 @@ public class FilmController {
         }
         return new ResponseEntity<>(films, HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("/FilmByID/{FilmID}")
     public ResponseEntity<?> GetFilmByID(@PathVariable("FilmID") Long FilmID){
         Film film = filmService.findById(FilmID);
@@ -46,12 +48,13 @@ public class FilmController {
         filmChapterActorDTO.loadData(film,chapterService,actorService,categoryService);
         return new ResponseEntity<>(filmChapterActorDTO, HttpStatus.OK);
     }
-
+    @Secured({"ROLE_ADMIN"})
     @PostMapping("/AllFilm")
     public ResponseEntity<?> postFilm(@ModelAttribute  FilmRequestDTO filmPost){
         Film film =filmService.saveFilm(filmPost);
         return new ResponseEntity<>("đ", HttpStatus.CREATED);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("/FilmByName/{filmName}")
     public ResponseEntity<?> getFilmByID(@PathVariable("filmName") String filmName){
         List<Film> films=filmService.findUsersByFilmNameContain(filmName);
@@ -62,16 +65,19 @@ public class FilmController {
 
         return ResponseEntity.ok(filmListDTO);
     }
+    @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/FilmByID/{FilmID}")
     public ResponseEntity<?> DeleteFilm(@PathVariable("FilmID") Long FilmID){
         filmService.deleteFilmByID(FilmID);
         return new ResponseEntity<>("Xoa thanh cong", HttpStatus.NO_CONTENT);
     }
+    @Secured({"ROLE_ADMIN"})
     @PatchMapping("/FilmByID/{FilmID}")
     public ResponseEntity<?> PatchFilm(@PathVariable("FilmID") Long FilmID,@ModelAttribute FilmRequestDTO filmRequestDTO){
         Film film =filmService.updateFilm(FilmID,filmRequestDTO);
         return new ResponseEntity<>(film, HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("/FilmChapterIDChapterID/{chapterId}")
     public ResponseEntity<?> FilmChapterIDChapterID(@PathVariable("chapterId") Long chapterId){
         Film film = filmService.filmByIdChapter(chapterId);
@@ -85,7 +91,7 @@ public class FilmController {
         filmChaptersDTO.setChapters(chapterDTOList);
         return new ResponseEntity<>(filmChaptersDTO,HttpStatus.OK);
     }
-
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("CategoryAllFim")
     public ResponseEntity<?> GetCategoryFilmList(){
         List<CategoryFilmChapterDTO> list = new ArrayList<>();
@@ -98,6 +104,7 @@ public class FilmController {
         }
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN,ROLE_USER"})
     @GetMapping("/FindFilm/{key}")
     public ResponseEntity<?> searchFilm(@PathVariable("key") String key) {
         List<Film> films = filmService.searchFilm(key);

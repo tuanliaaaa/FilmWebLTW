@@ -104,10 +104,10 @@
     <div id="footer">
         
     </div>
-    <script> 
-        var indexPage=1;
+    <script>
+
         if(localStorage.getItem("Token")){
-            
+            CheckAdmin();
             GetAllUser();
           
             
@@ -115,7 +115,42 @@
         else{
             window.location="/Admin/Login";
         }
-        
+        function CheckAdmin(){
+             const xhttp = new XMLHttpRequest();
+                xhttp.onload = function()
+                {
+                    if(xhttp.status==200)
+                    {
+                        var ResponseJson=xhttp.responseText
+                        var Response= JSON.parse(ResponseJson)
+                        if(Response.authorities[0].authority!="ROLE_ADMIN"){
+                         localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                        }
+                    }else if(xhttp.status==204){
+
+                    }
+                    else if(xhttp.status==401)
+                    {
+                        localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                    }
+                    else if(xhttp.status==403)
+                    {
+                        localStorage.removeItem("Token");
+                        window.location="/Admin/Login";
+                    }
+                }
+
+                xhttp.open("GET", "/user",false);
+
+                xhttp.setRequestHeader("Content-type","application/json")
+                token = localStorage.getItem("Token");
+                authorization ='Bearer '+token
+                xhttp.setRequestHeader("Authorization",authorization);
+                xhttp.send();
+
+        }
         function LogOut(){
             window.location="/Admin/Login";
             localStorage.removeItem("Token");
@@ -127,8 +162,7 @@
             {
                 GetAllUser();
             }else{
-                console.log(Username);
-                indexPage=1;
+
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() 
                 {
@@ -139,13 +173,9 @@
                         var tableUserElement = document.getElementById('table__Users');
                         var indexPageElement = document.getElementById('indexPage');
                         var indexPageHtml='';
-                        if(indexPage>1){
-                            indexPageHtml+='<div class="indexPage___prev" onclick="prevPage()" ><p><</p></div>';
-                        }
-                        indexPageHtml +='<div class="indexPage___now"><p>'+indexPage+'</p></div>';
-                        if(Response.length==2){
-                            indexPageHtml+='<div class="indexPage___next" onclick="nextPage()"><p>></p></div>';
-                        }
+
+                        indexPageHtml +='<div class="indexPage___now"><p>'+'1'+'</p></div>';
+
                         
                         var tableUserHtml ='<thead><tr><th>ID</th><th>UserName</th><th>FullName</th><th>Action</th></tr></thead><tbody>';
                         for (var i =0;i<Response.length;i++){
@@ -169,7 +199,7 @@
                     }
                 }         
                 //khai báo phương thức và đường dẫn để request
-                xhttp.open("GET", "/ApiV1/UserByName/"+Username+"?page="+indexPage,false);
+                xhttp.open("GET", "/ApiV1/UserByName/"+Username,false);
                 //định dạng gửi đi787
                 xhttp.setRequestHeader("Content-type","application/json")
                 token = localStorage.getItem("Token");
@@ -190,13 +220,9 @@
                     var tableUserElement = document.getElementById('table__Users');
                     var indexPageElement = document.getElementById('indexPage');
                     var indexPageHtml='';
-                    if(indexPage>1){
-                        indexPageHtml+='<div class="indexPage___prev" onclick="prevPage()" ><p><</p></div>';
-                    }
-                    indexPageHtml +='<div class="indexPage___now"><p>'+indexPage+'</p></div>';
-                    if(Response.length==2){
-                        indexPageHtml+='<div class="indexPage___next" onclick="nextPage()"><p>></p></div>';
-                    }
+
+                    indexPageHtml +='<div class="indexPage___now"><p>'+1+'</p></div>';
+
                     
                     var tableUserHtml ='<thead><tr><th>ID</th><th>UserName</th><th>FullName</th><th>Action</th></tr></thead><tbody>';
                     for (var i =0;i<Response.length;i++){
@@ -220,7 +246,7 @@
                 }
             }         
             //khai báo phương thức và đường dẫn để request
-            xhttp.open("GET", "/ApiV1/AllUser?page="+indexPage,false);
+            xhttp.open("GET", "/ApiV1/AllUser",false);
             //định dạng gửi đi787
             xhttp.setRequestHeader("Content-type","application/json")
             token = localStorage.getItem("Token");
@@ -228,14 +254,7 @@
             xhttp.setRequestHeader("Authorization",authorization);
             xhttp.send();
         }  
-        function prevPage(){
-            indexPage-=1;
-            GetAllUser();
-        }
-        function nextPage(){
-            indexPage+=1;
-            GetAllUser();
-        }
+
         function Delete(userID){
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() 

@@ -54,7 +54,7 @@ public class UserController {
     private UserService userService;
     @RequestMapping(value = "user", method = RequestMethod.GET)
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public JwtUser getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtUtil.getUsernameFromToken(token);
@@ -65,6 +65,7 @@ public class UserController {
     public ResponseEntity<?> saveUser(@RequestBody UserSignupDTO user) throws Exception {
         return new ResponseEntity<>(userDetailsServicea.save(user),HttpStatus.CREATED);
     }
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/ApiV1/UserByLogin")
     public ResponseEntity<?> getUserByIdLogin(HttpServletRequest request){
         String token = request.getHeader(tokenHeader).substring(7);
@@ -74,6 +75,7 @@ public class UserController {
         UserDTO userDTO = new UserDTO(user);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PatchMapping("/ApiV1/UserByLogin")
     public ResponseEntity<?> changeFullName(HttpServletRequest request,@RequestBody UserDTO userDTO){
         String token = request.getHeader(tokenHeader).substring(7);
