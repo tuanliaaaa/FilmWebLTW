@@ -63,8 +63,8 @@ public class HomeControllers {
     )
     public @ResponseBody byte[] getFile(@PathVariable String fileName) throws IOException {
 
-        InputStream in = getClass()
-                .getResourceAsStream("/Media/Images/" + fileName);
+        File f = new File("./Media/Images/" + fileName);
+        InputStream in = new FileInputStream(f);
         return IOUtils.toByteArray(in);
     }
 
