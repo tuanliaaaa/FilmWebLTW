@@ -234,6 +234,7 @@ public class HistoryController {
                 recommendedChapters.add(chapterAll.get(indexDetail));
             }
         }
+        
         return  new ResponseEntity<>(recommendedChapters,HttpStatus.OK);
     }
 
