@@ -48,8 +48,8 @@ public class FilmService {
     public String saveFile(MultipartFile file,String typeFile){
         //Lưu Image về server
         String rootDir = System.getProperty("user.dir");
-        // Đường dẫn tương đối đến thư mục "images"
-        String relativePath = "/src/main/resources/static/"+typeFile+"/";
+        // Đường dẫn tương đối đến thư mục
+        String relativePath = "/src/main/resources/Media/"+typeFile+"/";
 
         // Lưu file vào thư mục image
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -63,7 +63,7 @@ public class FilmService {
 
         // Lưu đường dẫn của file vào CSDL
         String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/"+typeFile+"/")
+                .path("/get-file/")
                 .path(fileNameNew)
                 .toUriString();
         return  fileUrl;
@@ -113,13 +113,13 @@ public class FilmService {
             if(filmPost.getChapterName()==null) throw new IllegalArgumentException("Vui Lòng nhập tên Chapter 1");
             if(filmPost.getChapterDescription()==null) throw new IllegalArgumentException("Vui Lòng nhập mô tả Chapter 1");
         }
-        String image = saveFile(filmPost.getImage(),"images");
-        String banner = saveFile(filmPost.getBannerFilmName(),"images");
-        String trailer =saveFile(filmPost.getTrailerFilm(),"videos");
+        String image = saveFile(filmPost.getImage(),"Images");
+        String banner = saveFile(filmPost.getBannerFilmName(),"Images");
+        String trailer =saveFile(filmPost.getTrailerFilm(),"Videos");
         String status="Đang Ra";
         String video="";
         if(filmPost.getVideo()!=null){
-            video =saveFile(filmPost.getVideo(),"videos");
+            video =saveFile(filmPost.getVideo(),"Videos");
             status="Đã Ra";
         }
 
@@ -219,19 +219,19 @@ public class FilmService {
         }
         if(filmPatch.getImage()!=null)
         {
-            String image = saveFile(filmPatch.getImage(),"images");
+            String image = saveFile(filmPatch.getImage(),"Images");
             film.setFilmImage(image);
             chapter.setChapterImage(image);
         }
         if(filmPatch.getBannerFilmName()!=null)
         {
-            String banner = saveFile(filmPatch.getBannerFilmName(),"images");
+            String banner = saveFile(filmPatch.getBannerFilmName(),"Images");
             film.setBannerFilmName(banner);
 
         }
         if(filmPatch.getTrailerFilm()!=null)
         {
-            String trailer =saveFile(filmPatch.getTrailerFilm(),"videos");
+            String trailer =saveFile(filmPatch.getTrailerFilm(),"Videos");
             film.setTrailerFilm(trailer);
             chapter.setTrailerChapter(trailer);
         }
@@ -246,7 +246,7 @@ public class FilmService {
 
         String status="";
         if(filmPatch.getVideo()!=null){
-            String video =saveFile(filmPatch.getVideo(),"videos");
+            String video =saveFile(filmPatch.getVideo(),"Videos");
             chapter.setVideo(video);
             chapter.setChapterPremieredDay(LocalDateTime.now());
             status="Đã Ra";
