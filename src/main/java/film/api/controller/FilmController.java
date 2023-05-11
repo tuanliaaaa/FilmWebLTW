@@ -52,7 +52,7 @@ public class FilmController {
     @PostMapping("/AllFilm")
     public ResponseEntity<?> postFilm(@ModelAttribute  FilmRequestDTO filmPost){
         Film film =filmService.saveFilm(filmPost);
-        return new ResponseEntity<>("đ", HttpStatus.CREATED);
+        return new ResponseEntity<>(film, HttpStatus.CREATED);
     }
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("/FilmByName/{filmName}")

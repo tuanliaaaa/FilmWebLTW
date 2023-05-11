@@ -1,6 +1,7 @@
 package film.api.service;
 
 import film.api.DTO.ChapterRequestDTO;
+import film.api.exception.InvalidInputException;
 import film.api.helper.FileSystemHelper;
 import film.api.models.Actor;
 import film.api.models.ActorChapter;
@@ -88,21 +89,21 @@ public class ChapterService {
     public Chapter addChapter(Long filmID, ChapterRequestDTO chapterPost){
         Film film= filmRepository.findById(filmID).orElse(null);
         if(chapterPost.getChapterName()==null ||chapterPost.getChapterName().replaceAll("\\s+", "").equals("")){
-            throw new IllegalArgumentException("Vui Lòng nhập Tên Chapter");
+            throw new InvalidInputException("Vui Lòng nhập Tên Chapter");
         }
         if(chapterPost.getListActor()==null ||chapterPost.getListActor().replaceAll("\\s+", "").equals("")){
-            throw new IllegalArgumentException("Vui Lòng nhập Tên Chapter");
+            throw new InvalidInputException("Vui Lòng nhập Tên Actor");
         }
 
 
         if(chapterPost.getChapterDescription()==null||chapterPost.getChapterDescription().replaceAll("\\s+", "").equals("")){
-            throw new IllegalArgumentException("Vui Lòng nhập  Mô Tả Chapter");
+            throw new InvalidInputException("Vui Lòng nhập  Mô Tả Chapter");
         }
         if(chapterPost.getTrailerChapter()==null){
-            throw new IllegalArgumentException("Vui Lòng nhập  Trailer Chapter");
+            throw new InvalidInputException("Vui Lòng nhập  Trailer Chapter");
         }
         if(chapterPost.getChapterImage()==null){
-            throw new IllegalArgumentException("Vui Lòng nhập  Image Chapter");
+            throw new InvalidInputException("Vui Lòng nhập  Image Chapter");
         }
 
         String status="Đang Ra";

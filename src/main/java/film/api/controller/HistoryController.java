@@ -119,6 +119,31 @@ public class HistoryController {
         }
         return new ResponseEntity<>(chapterDTOS, HttpStatus.OK);
     }
+    public double sumrow(double[] row){
+        double sum = 0.0;
+        for (double element : row) {
+            sum += element;
+        }
+        return sum;
+    }
+    public double countZeroRow(double[] row){
+        double count = 0.0;
+        for (double element : row) {
+            if(element==(double) 0){
+                count+=1;
+            }
+        }
+        return count;
+    }
+    public double[] ChangeToAray(List<Double> list){
+        double[] array = new double[list.size()];
+
+// Sao chép các giá trị từ list sang mảng
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+        return array;
+    }
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     @GetMapping("Recommend")
     public ResponseEntity<?> getRecommend(HttpServletRequest request) {
@@ -234,7 +259,92 @@ public class HistoryController {
                 recommendedChapters.add(chapterAll.get(indexDetail));
             }
         }
-        
+        //----------------------------------Lọc cộng tác theo item-item----------
+
+        //Lấy Toàn bộ người dùng
+        List<User> users =userService.findAll();
+        //Tìm kiếm vị trí của người dùng
+        Integer indexUserLogin=0;
+        for(int i=0;i<users.size();i++){
+            if(users.get(i).getId()==userID){
+                 indexUserLogin=i;
+            }
+        }
+        //Lấy Toàn Bộ Chapter
+        List<Chapter> chapters=chapterService.getList();
+        //Tạo ma trận full 0 với số hàng là số chapter và số cột là số User
+        double [][]ratings_array= new double[chapters.size()][users.size()];
+        RealMatrix ratings_matrix = new Array2DRowRealMatrix(ratings_array);
+        //thay đổi các giá trị 0 thành điểm số Rate trong history nếu người dùng đã đánh giá
+        for(int i=0;i<chapters.size();i++){
+            for(int j=0;j<users.size();j++){
+                History rating = historyService.getHistory(chapters.get(i).getId(),users.get(j).getId());
+                if (rating==null){
+                    ratings_matrix.setEntry(i,j,0);
+                }else {
+                    ratings_matrix.setEntry(i,j,rating.getRate());
+                }
+            }
+        }
+//        chuẩn hóa ma trận để giảm các rating giống nhau thể hiện rõ hơn sự đánh giá trái triều:
+
+        double [][]ratingsx_array= new double[chapters.size()][users.size()];
+        RealMatrix ratings_matrixx = new Array2DRowRealMatrix(ratingsx_array);
+        double avg =0;
+        for(int i=0;i<chapters.size();i++){
+            Boolean fullZero= false;
+            try{
+                 avg=sumrow(ratings_matrix.getRow(i))/countZeroRow(ratings_matrix.getRow(i));
+            }catch (Exception e){
+                fullZero=true;
+            }
+            if(fullZero==false ){
+                for (int j=0;j<users.size();j++){
+                    if(ratings_matrix.getEntry(i,j)!=0){
+                        ratings_matrix.setEntry(i,j,ratings_matrix.getEntry(i,j)-avg);
+                    }
+                }
+            }
+        }
+        //Hoàn thành matran userlogin với chapter
+        List<Double> ratingChapterUser=new ArrayList<>();
+        for(int i=0;i<chapters.size();i++){
+            if(ratings_matrix.getEntry(i,indexUserLogin)!=0){
+                ratingChapterUser.add((double) 0);
+            }else{
+                List<Double> ratingList=new ArrayList<>();
+                for(int j=0;j<chapters.size();j++){
+                    List<Double> newChapter1 = new ArrayList<>();
+                    List<Double> newChapter2 = new ArrayList<>();
+
+                    for (int l = 0; l < ratings_matrixx.getRow(0).length; l++) {
+                        if (ratings_matrixx.getEntry(i,l) != 0 && ratings_matrixx.getEntry(j,l) != 0) {
+                            newChapter1.add(ratings_matrixx.getEntry(i,l));
+                            newChapter2.add(ratings_matrixx.getEntry(j,l));
+                        }
+                    }
+//                     Tính độ tương đồng giữa 2 chapter bằng cosin
+                    CosineSimilarity b=  new CosineSimilarity();
+                    ratingList.add(b.cosineSimilarity(ChangeToAray(newChapter1),ChangeToAray(newChapter2)));
+//               //    lấy ra 2 chapter giông chapter đang tính rating nhất và tính trugn bình có trọng số
+                }
+                Integer[] indexs = new Integer[ratingList.size()];
+                for (Integer h = 0; h < ratingList.size(); h++) {
+                    indexs[h] = h;
+                }
+                Arrays.sort(indexs, new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer i1, Integer i2) {
+                        if(ratingList.get(i1)==ratingList.get(i2)){
+                            return 0;
+                        } else if (ratingList.get(i1)>ratingList.get(i2)){
+                            return  -1;
+                        }return 1;
+                    }
+                });
+                ratingChapterUser.add((ratingList.get(indexs[0])*ratings_matrix.getEntry(indexs[0],indexUserLogin)+ratingList.get(indexs[1])*ratings_matrix.getEntry(indexs[1],indexUserLogin))/(ratingList.get(indexs[0])+ratingList.get(indexs[0])));
+            }
+        }
         return  new ResponseEntity<>(recommendedChapters,HttpStatus.OK);
     }
 

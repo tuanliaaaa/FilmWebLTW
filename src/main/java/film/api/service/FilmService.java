@@ -1,6 +1,7 @@
 package film.api.service;
 
 import film.api.DTO.FilmRequestDTO;
+import film.api.exception.InvalidInputException;
 import film.api.helper.FileSystemHelper;
 import film.api.models.*;
 import film.api.repository.*;
@@ -77,41 +78,41 @@ public class FilmService {
 
         if(filmPost.getFilmName()==null||filmPost.getFilmName().replaceAll("\\s+", "").equals(""))
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Tên Film");
+            throw new InvalidInputException("Vui Lòng nhập Tên Film");
         }
         if(filmPost.getDescription()==null||filmPost.getDescription().equals(""))
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Mô Tả Film");
+            throw new InvalidInputException("Vui Lòng nhập Mô Tả Film");
         }
 
         if(filmPost.getListActor()==null)
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Tên Diễn Viên");
+            throw new InvalidInputException("Vui Lòng nhập Tên Diễn Viên");
         }else{
-            if(filmPost.getListActor().equals(""))throw new IllegalArgumentException("Vui Lòng nhập Tên Diễn Viên");
+            if(filmPost.getListActor().equals(""))throw new InvalidInputException("Vui Lòng nhập Tên Diễn Viên");
         }
         if(filmPost.getListCategory()==null)
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Thể Loại Film");
+            throw new InvalidInputException("Vui Lòng nhập Thể Loại Film");
         }else{
-            if(filmPost.getListCategory().equals("")) throw new IllegalArgumentException("Vui Lòng nhập Thể Loại Film");
+            if(filmPost.getListCategory().equals("")) throw new InvalidInputException("Vui Lòng nhập Thể Loại Film");
         }
         if(filmPost.getImage()==null)
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Image Film");
+            throw new InvalidInputException("Vui Lòng nhập Image Film");
         }
         if(filmPost.getBannerFilmName()==null)
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Banner Film");
+            throw new InvalidInputException("Vui Lòng nhập Banner Film");
         }
         if(filmPost.getTrailerFilm()==null)
         {
-            throw new IllegalArgumentException("Vui Lòng nhập Trailer Film");
+            throw new InvalidInputException("Vui Lòng nhập Trailer Film");
         }
         if(filmPost.getFilmBollen()==1)
         {
-            if(filmPost.getChapterName()==null) throw new IllegalArgumentException("Vui Lòng nhập tên Chapter 1");
-            if(filmPost.getChapterDescription()==null) throw new IllegalArgumentException("Vui Lòng nhập mô tả Chapter 1");
+            if(filmPost.getChapterName()==null) throw new InvalidInputException("Vui Lòng nhập tên Chapter 1");
+            if(filmPost.getChapterDescription()==null) throw new InvalidInputException("Vui Lòng nhập mô tả Chapter 1");
         }
         String image = saveFile(filmPost.getImage(),"Images");
         String banner = saveFile(filmPost.getBannerFilmName(),"Images");
@@ -187,8 +188,8 @@ public class FilmService {
                 categoryList[i] = Long.parseLong(categoryString[i]);
             }
 
-            if(actorList.length==0)throw new IllegalArgumentException("Vui Lòng nhập Actor");
-            if(categoryList.length==0)throw new IllegalArgumentException("Vui Lòng nhập Category");
+            if(actorList.length==0)throw new InvalidInputException("Vui Lòng nhập Actor");
+            if(categoryList.length==0)throw new InvalidInputException("Vui Lòng nhập Category");
             List<ActorChapter>  actorChapterList = actorChapterRepository.findActorChapterByChapterId(chapter.getId());
             for(ActorChapter actorChapter:actorChapterList){
                 actorChapterRepository.delete(actorChapter);

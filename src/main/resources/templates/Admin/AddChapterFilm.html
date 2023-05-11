@@ -227,10 +227,11 @@
                     
                 } else if(xhr.status === 304){
                     window.location='/Login';
-                } else if(xhr.status === 400){
+                } else if(xhr.status === 500){
                     var ResponseJson=xhr.responseText
                     var Response= JSON.parse(ResponseJson)
-                    alert(Response.massage);
+                    console.log(Response);
+                    alert(Response.messages);
 
                 } else{
                     
