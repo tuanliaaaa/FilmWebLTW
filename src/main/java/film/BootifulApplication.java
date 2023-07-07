@@ -1,6 +1,6 @@
 package film;
 
-import film.api.helper.FileSystemHelper;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -21,19 +21,14 @@ public class BootifulApplication {
 
 	public static void main(String[] args) {
 		try {
-			setup();
+
 			SpringApplication.run(BootifulApplication.class, args);
 		} catch (Exception e) {
 			System.out.println("error setting up service, shutting down ...");
 		}
 	}
 
-	public static void setup() throws IOException {
 
-		// Create static file dir if not exist
-		Files.createDirectories(Paths.get(FileSystemHelper.STATIC_FILES_DIR));
-		System.out.println("static file dir is created at: " + FileSystemHelper.STATIC_FILES_DIR);
-	}
 //	@Bean
 //	public WebMvcConfigurer corsConfigurer() {
 //		return new WebMvcConfigurerAdapter() {
